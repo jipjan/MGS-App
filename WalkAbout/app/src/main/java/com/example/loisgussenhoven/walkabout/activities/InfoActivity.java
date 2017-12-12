@@ -1,7 +1,9 @@
-package com.example.loisgussenhoven.walkabout;
+package com.example.loisgussenhoven.walkabout.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.loisgussenhoven.walkabout.R;
 
 public class InfoActivity extends AppCompatActivity {
 

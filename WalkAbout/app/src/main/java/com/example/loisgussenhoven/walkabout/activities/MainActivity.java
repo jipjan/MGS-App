@@ -1,10 +1,12 @@
-package com.example.loisgussenhoven.walkabout;
+package com.example.loisgussenhoven.walkabout.activities;
 
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+
+import com.example.loisgussenhoven.walkabout.R;
 
 import java.util.ArrayList;
 import java.util.List;
