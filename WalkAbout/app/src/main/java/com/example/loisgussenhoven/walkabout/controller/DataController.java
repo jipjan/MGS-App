@@ -1,5 +1,6 @@
 package com.example.loisgussenhoven.walkabout.controller;
 
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -15,12 +16,15 @@ import java.util.List;
 
 public class DataController extends SQLiteOpenHelper {
 
+    private static final String DBNAME = "MGS";
+    private static final int VERSION = 1;
+
     private List<Pinpoint> session;
     private HashMap<String, String> routes;
 
 
-    public DataController() {
-
+    public DataController(Context c) {
+        super(c, DBNAME, null, VERSION);
     }
 
 
@@ -39,7 +43,7 @@ public class DataController extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        
+
     }
 
     @Override
