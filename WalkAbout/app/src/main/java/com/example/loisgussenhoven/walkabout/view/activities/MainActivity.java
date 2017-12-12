@@ -1,4 +1,4 @@
-package com.example.loisgussenhoven.walkabout.activities;
+package com.example.loisgussenhoven.walkabout.view.activities;
 
 
 import android.support.v7.app.AppCompatActivity;
