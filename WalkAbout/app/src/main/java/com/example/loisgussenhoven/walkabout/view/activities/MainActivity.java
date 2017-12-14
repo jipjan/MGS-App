@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.example.loisgussenhoven.walkabout.R;
+import com.example.loisgussenhoven.walkabout.controller.DataController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,8 @@ public class MainActivity extends AppCompatActivity {
         protected void onCreate (Bundle savedInstanceState){
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
+
+             DataController test = new DataController(this);
 
             //Language Spinner
                  List spinnerArray =  new ArrayList<String>();
