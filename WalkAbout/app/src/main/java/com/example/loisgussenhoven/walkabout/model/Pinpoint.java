@@ -7,16 +7,22 @@ import java.util.List;
  */
 
 public abstract class Pinpoint {
+    private int id;
     private String name, information;
     private float longitude, latitude;
     private boolean visited;
 
-    public Pinpoint(String name, String information, float longitude, float latitude, boolean visited) {
+    public Pinpoint(int id, String name, String information, float longitude, float latitude, boolean visited) {
+        this.id = id;
         this.name = name;
         this.information = information;
         this.longitude = longitude;
         this.latitude = latitude;
         this.visited = visited;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {

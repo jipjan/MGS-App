@@ -9,10 +9,11 @@ import java.util.List;
 public class BlindWallPoint extends Pinpoint {
     private String author;
     private int year;
-    private List<Integer> images;
 
-    public BlindWallPoint(String name, String information, float longitude, float latitude, boolean visited) {
-        super(name, information, longitude, latitude, visited);
+    public BlindWallPoint(int id, String name, String information, float longitude, float latitude, boolean visited, String author, int year) {
+        super(id, name, information, longitude, latitude, visited);
+        this.author = author;
+        this.year = year;
     }
 
     public String getAuthor() {
@@ -21,9 +22,5 @@ public class BlindWallPoint extends Pinpoint {
 
     public int getYear() {
         return year;
-    }
-
-    public List<Integer> getImages() {
-        return images;
     }
 }

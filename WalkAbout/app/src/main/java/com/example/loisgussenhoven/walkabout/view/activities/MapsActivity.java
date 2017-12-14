@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import com.example.loisgussenhoven.walkabout.R;
 import com.example.loisgussenhoven.walkabout.controller.DataController;
+import com.example.loisgussenhoven.walkabout.model.BlindWallPoint;
 import com.example.loisgussenhoven.walkabout.model.RoutePoint;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -47,7 +48,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
         googleMap.getUiSettings().setZoomControlsEnabled(true);
 
-        addRoutePoints(googleMap);
+        //addRoutePoints(googleMap);
+        generateBlindWallsRoute(googleMap);
 
         googleMap.moveCamera(CameraUpdateFactory.zoomTo(17.5f));
     }
@@ -70,7 +72,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(points.get(0).getLatitude(), points.get(0).getLongitude())));
     }
 
-    private void generateBlindWallsRoute() {
-
+    private void generateBlindWallsRoute(GoogleMap googleMap) {
+        List<BlindWallPoint> points = new DataController(this).allBlindWallPoints();
+        for (BlindWallPoint p : points){
+            LatLng point = new LatLng(p.getLatitude(), p.getLongitude());
+            googleMap.addMarker(new MarkerOptions().position(point).title(p.getName()));
+        }
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(points.get(0).getLatitude(), points.get(0).getLongitude())));
     }
 }

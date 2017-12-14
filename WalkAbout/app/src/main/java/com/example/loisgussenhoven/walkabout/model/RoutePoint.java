@@ -6,14 +6,7 @@ package com.example.loisgussenhoven.walkabout.model;
 
 public class RoutePoint extends Pinpoint {
 
-    private int nmr;
-
-    public RoutePoint(int nmr, String name, String information, float longitude, float latitude, boolean visited) {
-        super(name, information, longitude, latitude, visited);
-        this.nmr = nmr;
-    }
-
-    public int getNmr() {
-        return nmr;
+    public RoutePoint(int id, String name, String information, float longitude, float latitude, boolean visited) {
+        super(id, name, information, longitude, latitude, visited);
     }
 }
