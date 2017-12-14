@@ -11,9 +11,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.example.loisgussenhoven.walkabout.R;
 import com.example.loisgussenhoven.walkabout.controller.DataController;
 import com.example.loisgussenhoven.walkabout.controller.RouteController;
+import com.example.loisgussenhoven.walkabout.controller.json.Directions;
 import com.example.loisgussenhoven.walkabout.model.BlindWallPoint;
 import com.example.loisgussenhoven.walkabout.model.RoutePoint;
 import com.google.android.gms.location.LocationServices;
@@ -32,7 +35,7 @@ import com.google.android.gms.tasks.Task;
 
 import java.util.List;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, Response.Listener<Directions>, Response.ErrorListener {
 
     private GoogleMap map;
 
@@ -77,7 +80,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LocationServices.getFusedLocationProviderClient(this).getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location loc) {
-                RouteController.getDirections(new LatLng(loc.getLatitude(), loc.getLongitude()), new LatLng(51.5839d, 4.77735d));
+                RouteController controller = new RouteController(MapsActivity.this);
+                controller.getDirections(new LatLng(loc.getLatitude(), loc.getLongitude()), new LatLng(51.5839d, 4.77735d), MapsActivity.this, MapsActivity.this);
             }
         });
     }
@@ -99,5 +103,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             googleMap.addMarker(new MarkerOptions().position(point).title(p.getName()));
         }
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(points.get(0).getLatitude(), points.get(0).getLongitude())));
+    }
+
+    @Override
+    public void onErrorResponse(VolleyError error) {
+
+    }
+
+    @Override
+    public void onResponse(Directions response) {
+
     }
 }
