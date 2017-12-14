@@ -27,7 +27,6 @@ public class DataController extends SQLiteOpenHelper {
         super(c, DBNAME, null, VERSION);
     }
 
-
     public String getRouteInformation(String name) {
         return routes.get(name);
     }
@@ -43,51 +42,52 @@ public class DataController extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String qryCreate = "CREATE TABLE " + DBNAME + ".RoutePoint(Id INT PRIMARY KEY, Noorderbreedte FLOAT, Oosterlengte FLOAT, Naam TEXT, Opmerking TEXT)";
-        String qryInsert = "INSERT INTO "  + DBNAME +  ".RoutePoint VALUES (`1`, `51,35647`, `4,46765`, `VVV`, `Beginpunt`);\n" +
-                "INSERT INTO Pinpoint VALUES (`2`, `51,35597`, `4,467633`, `Liefdeszuster`, ``);\n" +
-                "INSERT INTO Pinpoint VALUES (`3`, `51,3555`, `4,467817`, `Nassau Baronie Monument`, ``);\n" +
-                "INSERT INTO Pinpoint VALUES (`4`, `51,3555`, `4,467633`, ``, `Pad ten westen van monument`);\n" +
-                "INSERT INTO Pinpoint VALUES (`5`, `51,3557`, `4,467083`, `The Light House`, ``);\n" +
-                "INSERT INTO Pinpoint VALUES (`6`, `51,3556`, `4,46675`, ``, ``);\n" +
-                "INSERT INTO Pinpoint VALUES (`7`, `51,35437`, `4,4662`, ``, `Einde park`);\n" +
-                "INSERT INTO Pinpoint VALUES (`8`, `51,35437`, `4,4657`, `Kasteel van Breda`, `Kasteelplein`);\n" +
-                "INSERT INTO Pinpoint VALUES (`9`, `51,35382`, `4,465683`, `Stadhouderspoort`, ``);\n" +
-                "INSERT INTO Pinpoint VALUES (`10`, `51,3542`, `4,4656`, ``, `Kruising Kasteelplein/Cingelstraat`);\n" +
-                "INSERT INTO Pinpoint VALUES (`11`, `51,35423`, `4,465`, ``, `Bocht Cingelstraat`);\n" +
-                "INSERT INTO Pinpoint VALUES (`12`, `51,35402`, `4,464617`, `Huis van Brecht (rechter zijde)`, ``);\n" +
-                "INSERT INTO Pinpoint VALUES (`13`, `51,35412`, `4,464067`, `Spanjaardsgat (rechter zijde)`, ``);\n" +
-                "INSERT INTO Pinpoint VALUES (`14`, `51,3539`, `4,464`, `Begin Vismarkt`, ``);\n" +
-                "INSERT INTO Pinpoint VALUES (`15`, `51,35362`, `4,464667`, `Begin Havermarkt`, ``);\n" +
-                "INSERT INTO Pinpoint VALUES (`16`, `51,35327`, `4,464933`, ``, `Kruising Torenstraat/Kerkplein`);\n" +
-                "INSERT INTO Pinpoint VALUES (`17`, `51,3533`, `4,465167`, `Grote Kerk`, ``);\n" +
-                "INSERT INTO Pinpoint VALUES (`18`, `51,35327`, `4,464933`, ``, `Kruising Torenstraat/Kerkplein`);\n" +
-                "INSERT INTO Pinpoint VALUES (`19`, `51,35292`, `4,465083`, `Het Poortje`, ``);\n" +
-                "INSERT INTO Pinpoint VALUES (`20`, `51,35225`, `4,46545`, `Ridderstraat`, ``);\n" +
-                "INSERT INTO Pinpoint VALUES (`21`, `51,35245`, `4,465933`, `Grote Markt`, `Zuidpunt Grote Markt`);\n" +
-                "INSERT INTO Pinpoint VALUES (`22`, `51,35282`, `4,4658`, `Bevrijdingsmonument`, ``);\n" +
-                "INSERT INTO Pinpoint VALUES (`23`, `51,35325`, `4,465667`, `Stadhuis`, ``);\n" +
-                "INSERT INTO Pinpoint VALUES (`24`, `51,35278`, `4,465817`, ``, `Terug naar begin Grote Markt`);\n" +
-                "INSERT INTO Pinpoint VALUES (`25`, `51,3525`, `4,465933`, ``, `Zuidpunt Grote Markt`);\n" +
-                "INSERT INTO Pinpoint VALUES (`26`, `51,35258`, `4,46635`, `Antonius van Paduakerk`, ``);\n" +
-                "INSERT INTO Pinpoint VALUES (`27`, `51,35297`, `4,4671`, ``, `Kruising St.Janstraat/Molenstraat`);\n" +
-                "INSERT INTO Pinpoint VALUES (`28`, `51,3528`, `4,467367`, `Bibliotheek`, ``);\n" +
-                "INSERT INTO Pinpoint VALUES (`29`, `51,35242`, `4,468133`, ``, `Kruising Molenstraat/Kloosterplein`);\n" +
-                "INSERT INTO Pinpoint VALUES (`30`, `51,35263`, `4,468617`, `Kloosterkazerne`, ``);\n" +
-                "INSERT INTO Pinpoint VALUES (`31`, `51,35265`, `4,4692`, `Chasse theater`, ``);\n" +
-                "INSERT INTO Pinpoint VALUES (`32`, `51,35265`, `4,46875`, ``, `Kruising Kloosterplein/Vlaszak`);\n" +
-                "INSERT INTO Pinpoint VALUES (`33`, `51,35317`, `4,468533`, `Binding van Isaac`, ``);\n" +
-                "INSERT INTO Pinpoint VALUES (`34`, `51,3537`, `4,468267`, ``, `Kruising Vlaszak/Boschstraat`);\n" +
-                "INSERT INTO Pinpoint VALUES (`35`, `51,3538`, `4,4686`, `Beyerd`, ``);\n" +
-                "INSERT INTO Pinpoint VALUES (`36`, `51,3537`, `4,468267`, ``, `Kruising Vlaszak/Boschstraat`);\n" +
-                "INSERT INTO Pinpoint VALUES (`37`, `51,35373`, `4,468`, `Gasthuispoort`, ``);\n" +
-                "INSERT INTO Pinpoint VALUES (`38`, `51,35365`, `4,467917`, ``, `Ingang Veemarktstraat`);\n" +
-                "INSERT INTO Pinpoint VALUES (`39`, `51,35342`, `4,467817`, ``, `1e bocht Veemarktstraat`);\n" +
-                "INSERT INTO Pinpoint VALUES (`40`, `51,35313`, `4,467`, ``, `Kruising Veemarktstraat/St.Annastraat`);\n" +
-                "INSERT INTO Pinpoint VALUES (`41`, `51,35347`, `4,466767`, `Willem Merkxtuin`, `Ingang Willem Merkxtuin`);\n" +
-                "INSERT INTO Pinpoint VALUES (`42`, `51,3538`, `4,466683`, ``, `Kruising St.Annastraat/Catharinastraat`);\n" +
-                "INSERT INTO Pinpoint VALUES (`43`, `51,35382`, `4,467017`, `Begijnenhof`, `Ingang Begijnenhof`);\n" +
-                "INSERT INTO Pinpoint VALUES (`44`, `51,3538`, `4,466683`, ``, `Kruising St.Annastraat/Catharinastraat`);\n" +
-                "INSERT INTO Pinpoint VALUES (`45`, `51,3537`, `4,46575`, `Einde stadswandeling`, `Eindpunt`);\n";
+        String qryInsert =
+                "INSERT INTO Pinpoint VALUES (`1`, `51,59411`, `4,779417`, `VVV`, `Beginpunt`);\n" +
+                "INSERT INTO Pinpoint VALUES (`2`, `51,59328`, `4,779388`, `Liefdeszuster`, ``);\n" +
+                "INSERT INTO Pinpoint VALUES (`3`, `51,5925`, `4,779695`, `Nassau Baronie Monument`, ``);\n" +
+                "INSERT INTO Pinpoint VALUES (`4`, `51,5925`, `4,779388`, ``, `Pad ten westen van monument`);\n" +
+                "INSERT INTO Pinpoint VALUES (`5`, `51,59283`, `4,778471`, `The Light House`, ``);\n" +
+                "INSERT INTO Pinpoint VALUES (`6`, `51,59267`, `4,777917`, ``, ``);\n" +
+                "INSERT INTO Pinpoint VALUES (`7`, `51,59061`, `4,777`, ``, `Einde park`);\n" +
+                "INSERT INTO Pinpoint VALUES (`8`, `51,59061`, `4,776167`, `Kasteel van Breda`, `Kasteelplein`);\n" +
+                "INSERT INTO Pinpoint VALUES (`9`, `51,58969`, `4,776138`, `Stadhouderspoort`, ``);\n" +
+                "INSERT INTO Pinpoint VALUES (`10`, `51,59033`, `4,776`, ``, `Kruising Kasteelplein/Cingelstraat`);\n" +
+                "INSERT INTO Pinpoint VALUES (`11`, `51,59039`, `4,775`, ``, `Bocht Cingelstraat`);\n" +
+                "INSERT INTO Pinpoint VALUES (`12`, `51,59003`, `4,774362`, `Huis van Brecht (rechter zijde)`, ``);\n" +
+                "INSERT INTO Pinpoint VALUES (`13`, `51,59019`, `4,773445`, `Spanjaardsgat (rechter zijde)`, ``);\n" +
+                "INSERT INTO Pinpoint VALUES (`14`, `51,58983`, `4,773333`, `Begin Vismarkt`, ``);\n" +
+                "INSERT INTO Pinpoint VALUES (`15`, `51,58936`, `4,774445`, `Begin Havermarkt`, ``);\n" +
+                "INSERT INTO Pinpoint VALUES (`16`, `51,58878`, `4,774889`, ``, `Kruising Torenstraat/Kerkplein`);\n" +
+                "INSERT INTO Pinpoint VALUES (`17`, `51,58883`, `4,775279`, `Grote Kerk`, ``);\n" +
+                "INSERT INTO Pinpoint VALUES (`18`, `51,58878`, `4,774889`, ``, `Kruising Torenstraat/Kerkplein`);\n" +
+                "INSERT INTO Pinpoint VALUES (`19`, `51,5882`, `4,775138`, `Het Poortje`, ``);\n" +
+                "INSERT INTO Pinpoint VALUES (`20`, `51,58708`, `4,77575`, `Ridderstraat`, ``);\n" +
+                "INSERT INTO Pinpoint VALUES (`21`, `51,58742`, `4,776555`, `Grote Markt`, `Zuidpunt Grote Markt`);\n" +
+                "INSERT INTO Pinpoint VALUES (`22`, `51,58803`, `4,776333`, `Bevrijdingsmonument`, ``);\n" +
+                "INSERT INTO Pinpoint VALUES (`23`, `51,58875`, `4,776112`, `Stadhuis`, ``);\n" +
+                "INSERT INTO Pinpoint VALUES (`24`, `51,58797`, `4,776361`, ``, `Terug naar begin Grote Markt`);\n" +
+                "INSERT INTO Pinpoint VALUES (`25`, `51,5875`, `4,776555`, ``, `Zuidpunt Grote Markt`);\n" +
+                "INSERT INTO Pinpoint VALUES (`26`, `51,58764`, `4,77725`, `Antonius van Paduakerk`, ``);\n" +
+                "INSERT INTO Pinpoint VALUES (`27`, `51,58828`, `4,7785`, ``, `Kruising St.Janstraat/Molenstraat`);\n" +
+                "INSERT INTO Pinpoint VALUES (`28`, `51,588`, `4,778945`, `Bibliotheek`, ``);\n" +
+                "INSERT INTO Pinpoint VALUES (`29`, `51,58736`, `4,780221`, ``, `Kruising Molenstraat/Kloosterplein`);\n" +
+                "INSERT INTO Pinpoint VALUES (`30`, `51,58772`, `4,781028`, `Kloosterkazerne`, ``);\n" +
+                "INSERT INTO Pinpoint VALUES (`31`, `51,58775`, `4,782`, `Chasse theater`, ``);\n" +
+                "INSERT INTO Pinpoint VALUES (`32`, `51,58775`, `4,78125`, ``, `Kruising Kloosterplein/Vlaszak`);\n" +
+                "INSERT INTO Pinpoint VALUES (`33`, `51,58861`, `4,780889`, `Binding van Isaac`, ``);\n" +
+                "INSERT INTO Pinpoint VALUES (`34`, `51,5895`, `4,780445`, ``, `Kruising Vlaszak/Boschstraat`);\n" +
+                "INSERT INTO Pinpoint VALUES (`35`, `51,58967`, `4,781`, `Beyerd`, ``);\n" +
+                "INSERT INTO Pinpoint VALUES (`36`, `51,5895`, `4,780445`, ``, `Kruising Vlaszak/Boschstraat`);\n" +
+                "INSERT INTO Pinpoint VALUES (`37`, `51,58955`, `4,78`, `Gasthuispoort`, ``);\n" +
+                "INSERT INTO Pinpoint VALUES (`38`, `51,58942`, `4,779862`, ``, `Ingang Veemarktstraat`);\n" +
+                "INSERT INTO Pinpoint VALUES (`39`, `51,58903`, `4,779695`, ``, `1e bocht Veemarktstraat`);\n" +
+                "INSERT INTO Pinpoint VALUES (`40`, `51,58855`, `4,778333`, ``, `Kruising Veemarktstraat/St.Annastraat`);\n" +
+                "INSERT INTO Pinpoint VALUES (`41`, `51,58911`, `4,777945`, `Willem Merkxtuin`, `Ingang Willem Merkxtuin`);\n" +
+                "INSERT INTO Pinpoint VALUES (`42`, `51,58967`, `4,777805`, ``, `Kruising St.Annastraat/Catharinastraat`);\n" +
+                "INSERT INTO Pinpoint VALUES (`43`, `51,58969`, `4,778362`, `Begijnenhof`, `Ingang Begijnenhof`);\n" +
+                "INSERT INTO Pinpoint VALUES (`44`, `51,58967`, `4,777805`, ``, `Kruising St.Annastraat/Catharinastraat`);\n" +
+                "INSERT INTO Pinpoint VALUES (`45`, `51,5895`, `4,77625`, `Einde stadswandeling`, `Eindpunt`);\n";
         SQLiteDatabase db = getWritableDatabase();
         db.execSQL(qryCreate);
         db.execSQL(qryInsert);

@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
 
 import com.example.loisgussenhoven.walkabout.R;
 import com.google.android.gms.maps.CameraUpdate;
@@ -19,8 +20,6 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +31,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        googleMap.getUiSettings().setMyLocationButtonEnabled(true);
         if (ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MapsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
@@ -41,15 +39,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for ActivityCompat#requestPermissions for more details.
+            Toast toast = Toast.makeText(this, "Lacking permissions", Toast.LENGTH_LONG);
+            toast.show();
             return;
         }
+
+        googleMap.getUiSettings().setMyLocationButtonEnabled(true);
         googleMap.setMyLocationEnabled(true);
         googleMap.getUiSettings().setZoomControlsEnabled(true);
-        MapsInitializer.initialize(MapsActivity.this);
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        builder.include(new LatLng(51.386467d, 4.467650));
-        LatLngBounds bounds = builder.build();
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 0);
-        googleMap.moveCamera(cameraUpdate);
+        LatLng point = new LatLng(51.59411d, 4.779417);
+        googleMap.addMarker(new MarkerOptions().position(point).title("Start route"));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(point));
+        googleMap.moveCamera(CameraUpdateFactory.zoomTo(17.5f));
     }
 }
