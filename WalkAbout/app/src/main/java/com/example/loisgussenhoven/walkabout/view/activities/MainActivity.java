@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         startRoute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent t = new Intent(MainActivity.this, MapActivity.class);
+                Intent t = new Intent(MainActivity.this, MapsActivity.class);
                 startActivity(t);
             }
         });
