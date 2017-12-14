@@ -8,6 +8,8 @@ import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
 import com.example.loisgussenhoven.walkabout.R;
+import com.example.loisgussenhoven.walkabout.controller.DataController;
+import com.example.loisgussenhoven.walkabout.model.RoutePoint;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,6 +19,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -48,6 +52,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         googleMap.setMyLocationEnabled(true);
         googleMap.getUiSettings().setZoomControlsEnabled(true);
         LatLng point = new LatLng(51.59411d, 4.779417);
+
+        List<RoutePoint> points = new DataController(this).allRoutePoints();
+
         googleMap.addMarker(new MarkerOptions().position(point).title("Start route"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(point));
         googleMap.moveCamera(CameraUpdateFactory.zoomTo(17.5f));

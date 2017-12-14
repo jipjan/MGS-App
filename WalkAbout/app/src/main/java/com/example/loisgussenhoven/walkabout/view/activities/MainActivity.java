@@ -23,8 +23,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        DataController test = new DataController(this);
-
         //Language Spinner
         List spinnerArray = new ArrayList<String>();
         spinnerArray.add("Nederlands");
