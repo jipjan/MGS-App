@@ -51,12 +51,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
         googleMap.setMyLocationEnabled(true);
         googleMap.getUiSettings().setZoomControlsEnabled(true);
-        LatLng point = new LatLng(51.59411d, 4.779417);
 
         List<RoutePoint> points = new DataController(this).allRoutePoints();
-
-        googleMap.addMarker(new MarkerOptions().position(point).title("Start route"));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(point));
+        for (RoutePoint p : points) {
+            LatLng point = new LatLng(p.getLatitude(), p.getLongitude());
+            googleMap.addMarker(new MarkerOptions().position(point).title(p.getName()));
+        }
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(points.get(0).getLatitude(), points.get(0).getLongitude())));
         googleMap.moveCamera(CameraUpdateFactory.zoomTo(17.5f));
     }
+
+
 }
