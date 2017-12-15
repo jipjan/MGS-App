@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
@@ -19,6 +21,7 @@ import com.example.loisgussenhoven.walkabout.controller.RouteController;
 import com.example.loisgussenhoven.walkabout.controller.json.Directions;
 import com.example.loisgussenhoven.walkabout.model.BlindWallPoint;
 import com.example.loisgussenhoven.walkabout.model.RoutePoint;
+import com.example.loisgussenhoven.walkabout.view.RoutePointListAdapter;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -38,11 +41,17 @@ import java.util.List;
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, Response.Listener<Directions>, Response.ErrorListener {
 
     private GoogleMap map;
+    private RoutePointListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        RecyclerView list = findViewById(R.id.route_points_list);
+        list.setLayoutManager(new LinearLayoutManager(this));
+        list.setAdapter(adapter = new RoutePointListAdapter());
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
@@ -59,7 +68,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-        googleMap.getUiSettings().setZoomControlsEnabled(true);
+        //googleMap.getUiSettings().setZoomControlsEnabled(true);
 
         addRoutePoints(googleMap);
         //generateBlindWallsRoute(googleMap);
@@ -86,9 +95,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
     }
 
-
     private void addRoutePoints(GoogleMap googleMap) {
         List<RoutePoint> points = new DataController(this).allRoutePoints();
+        adapter.setItems(points);
         for (RoutePoint p : points) {
             LatLng point = new LatLng(p.getLatitude(), p.getLongitude());
             googleMap.addMarker(new MarkerOptions().position(point).title(p.getName()));

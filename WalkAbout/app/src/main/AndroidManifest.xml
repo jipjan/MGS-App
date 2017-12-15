@@ -36,7 +36,8 @@
 
         <activity
             android:name=".view.activities.MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+            android:label="@string/title_activity_maps" />
+        <activity android:name=".view.activities.WalkActivity"></activity>
     </application>
 
 </manifest>
