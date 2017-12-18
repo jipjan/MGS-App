@@ -4,8 +4,6 @@ package com.example.loisgussenhoven.walkabout.view.activities;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
-import android.media.Image;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -29,6 +27,8 @@ public class MainActivity extends BaseActivity {
     TextView name;
     Button BTN_start;
     ImageButton BTN_info;
+
+    Boolean selectedBlindwalls = true;
 
 
     @Override
@@ -64,7 +64,7 @@ public class MainActivity extends BaseActivity {
                 IB_HK.setColorFilter(Color.argb(0, 0, 0, 0));
                 IB_BW.setColorFilter(Color.argb(150, 0, 0, 0));
                 name.setText("Historische kilometer");
-
+                selectedBlindwalls = false;
             }
         });
 
@@ -74,7 +74,7 @@ public class MainActivity extends BaseActivity {
                 IB_HK.setColorFilter(Color.argb(150, 0, 0, 0));
                 IB_BW.setColorFilter(Color.argb(0, 0, 0, 0));
                 name.setText("Blind Walls");
-
+                selectedBlindwalls = true;
             }
         });
         BTN_start = findViewById(R.id.AM_BTN_Start);
@@ -83,6 +83,7 @@ public class MainActivity extends BaseActivity {
             public void onClick(View view) {
                 //TODO: map van juiste route ophalen
                 Intent i = new Intent(getApplicationContext(), MapsActivity.class);
+                i.putExtra("RouteType", selectedBlindwalls);
                 startActivity(i);
                 finish();
             }
