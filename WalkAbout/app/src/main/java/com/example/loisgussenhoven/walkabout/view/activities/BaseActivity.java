@@ -19,7 +19,7 @@ import java.util.Locale;
 public class BaseActivity extends AppCompatActivity {
 
     @NonNull
-    String locale = "";
+    static boolean english;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class BaseActivity extends AppCompatActivity {
         Resources res = getApplicationContext().getResources();
         DisplayMetrics display = res.getDisplayMetrics();
         Configuration conf = res.getConfiguration();
-        conf.setLocale(new Locale(locale));
+        conf.setLocale(new Locale(english ? "en" : "nl"));
         res.updateConfiguration(conf, display);
     }
 
@@ -35,5 +35,12 @@ public class BaseActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    void setLanguage(boolean english) {
+        if (this.english != english) {
+            this.english = english;
+            recreate();
+        }
     }
 }
