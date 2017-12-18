@@ -5,15 +5,11 @@ import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
-import android.location.LocationProvider;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -27,19 +23,14 @@ import com.example.loisgussenhoven.walkabout.model.Pinpoint;
 import com.example.loisgussenhoven.walkabout.model.RoutePoint;
 import com.example.loisgussenhoven.walkabout.view.RoutePointListAdapter;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,10 +40,14 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
     private GoogleMap map;
     private RoutePointListAdapter adapter;
 
+    private boolean blindwalls;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        blindwalls = getIntent().getBooleanExtra("RouteType", true);
 
         RecyclerView list = findViewById(R.id.route_points_list);
         list.setLayoutManager(new LinearLayoutManager(this));
@@ -67,8 +62,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
     public void onMapReady(final GoogleMap googleMap) {
         map = googleMap;
 
-        addRoutePoints();
-        //generateBlindWallsRoute(googleMap);
+        if (blindwalls)
+            generateBlindWallsRoute();
+        else
+            addRoutePoints();
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
@@ -77,12 +74,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
         }
 
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-        //googleMap.getUiSettings().setZoomControlsEnabled(true);
-
         googleMap.moveCamera(CameraUpdateFactory.zoomTo(17.5f));
     }
 
-        @Override
+    @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         if (requestCode == 0) {
             whenHasPermissions();

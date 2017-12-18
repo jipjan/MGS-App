@@ -12,16 +12,7 @@ public class InfoActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        showOptionsMenu = false;
         setContentView(R.layout.activity_info);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_bar_help:
-                // do stuff
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

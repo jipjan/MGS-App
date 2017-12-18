@@ -40,7 +40,7 @@ public class RouteController {
         urlBuilder.append("origin="+ latLngToString(points.get(0)));
         urlBuilder.append("&destination=" + latLngToString(points.get(points.size() - 1)));
         if (points.size() > 2) {
-            urlBuilder.append("&waypoints=");
+            urlBuilder.append("&waypoints=optimize:true|");
             urlBuilder.append(latLngToString(points.get(1)));
             for (int i = 2; i < points.size() - 1; i++)
                 urlBuilder.append("|" + latLngToString(points.get(i)));
