@@ -63,7 +63,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
         map = googleMap;
 
         if (blindwalls)
-            generateBlindWallsRoute();
+            addBlindWallsPoints();
         else
             addRoutePoints();
 
@@ -105,11 +105,18 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
     }
 
     private void addRoutePoints() {
-        List<RoutePoint> points = new DataController(this).allRoutePoints();
+        setPoints(new DataController(this).allRoutePoints());
+    }
+
+    private void addBlindWallsPoints() {
+        setPoints(new DataController(this).allBlindWallPoints());
+    }
+
+    private void setPoints(List<? extends Pinpoint> points) {
         adapter.setItems(points);
 
         List latPoints = new ArrayList();
-        for (RoutePoint p : points) {
+        for (Pinpoint p : points) {
             LatLng point = pinpointToLatLng(p);
             map.addMarker(new MarkerOptions().position(point).title(p.getName()));
             latPoints.add(point);
@@ -121,14 +128,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
         return new LatLng(p.getLatitude(), p.getLongitude());
     }
 
-    private void generateBlindWallsRoute() {
-        List<BlindWallPoint> points = new DataController(this).allBlindWallPoints();
-        for (BlindWallPoint p : points){
-            LatLng point = new LatLng(p.getLatitude(), p.getLongitude());
-            map.addMarker(new MarkerOptions().position(point).title(p.getName()));
-        }
-        map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(points.get(0).getLatitude(), points.get(0).getLongitude())));
-    }
+
 
     @Override
     public void onErrorResponse(VolleyError error) {
