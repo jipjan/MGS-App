@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grijs"
     tools:context=".view.activities.MainActivity">
 
 
@@ -40,7 +39,7 @@
     <TextView
         android:id="@+id/AM_TV_Name"
         android:layout_width="251dp"
-        android:layout_height="35dp"
+        android:layout_height="28dp"
         android:layout_marginBottom="20dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -55,19 +54,19 @@
 
     <ImageButton
         android:id="@+id/AM_IB_Info"
-        android:layout_width="50dp"
-        android:layout_height="35dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:background="@android:color/transparent"
-        android:tint="@android:color/transparent"
+        android:scaleType="fitXY"
         app:layout_constraintBottom_toBottomOf="@+id/AM_TV_Name"
         app:layout_constraintEnd_toEndOf="@+id/AM_BTN_Start"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.983"
         app:layout_constraintStart_toStartOf="@+id/AM_TV_Name"
         app:layout_constraintTop_toTopOf="@+id/AM_TV_Name"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@android:drawable/ic_dialog_info" />
+        app:layout_constraintVertical_bias="0.588"
+        app:srcCompat="@drawable/infobutton" />
 
     <ImageButton
         android:id="@+id/AM_IB_RouteBW"

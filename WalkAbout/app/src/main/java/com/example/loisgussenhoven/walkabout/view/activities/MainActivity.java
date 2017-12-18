@@ -23,7 +23,6 @@ public class MainActivity extends BaseActivity {
 
     ImageButton IB_BW;
     ImageButton IB_HK;
-    Configuration config;
     TextView name;
     Button BTN_start;
     ImageButton BTN_info;
@@ -86,7 +85,6 @@ public class MainActivity extends BaseActivity {
         BTN_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: map van juiste route ophalen
                 Intent i = new Intent(getApplicationContext(), MapsActivity.class);
                 i.putExtra("RouteType", selectedBlindwalls);
                 startActivity(i);
@@ -97,7 +95,7 @@ public class MainActivity extends BaseActivity {
         BTN_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), InfoAppActivity.class);
+                Intent i = new Intent(getApplicationContext(), InfoRouteActivity.class);
                 startActivity(i);
             }
         });
