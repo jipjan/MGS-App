@@ -67,7 +67,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
         else
             addRoutePoints();
 
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[] { Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 0);
         } else {
@@ -75,12 +74,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
         }
 
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
-        //googleMap.getUiSettings().setZoomControlsEnabled(true);
-
         googleMap.moveCamera(CameraUpdateFactory.zoomTo(17.5f));
     }
 
-        @Override
+    @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         if (requestCode == 0) {
             whenHasPermissions();
