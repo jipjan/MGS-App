@@ -48,7 +48,7 @@ public class DataController extends SQLiteOpenHelper {
     public List<RoutePoint> allRoutePoints() {
         List<RoutePoint> allRoutePoints = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + ROUTEPOINTTABLE, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + ROUTEPOINTTABLE + " ORDER BY Id ASC", null);
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 int id = cursor.getInt(0);
