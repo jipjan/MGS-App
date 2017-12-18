@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Walk About</string>
+    <string name="StartRoute">Start the route</string>
+    <string name="infoApp">Walk About is an application developed for the tourist office. With this app, the user can choose a route in Breda and follow it led by the app.</string>
+    <string name="InfoColourblind">The application can also be used for people with color blindness.</string>
+    <string name="kleurenblindheid">Color blindness</string>
+    <string name="medemogelijk">Made possible by AGS.</string>
+
+</resources>
