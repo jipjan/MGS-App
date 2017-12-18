@@ -34,17 +34,18 @@
         android:layout_marginTop="4dp"
         android:text="Author"
         android:textColor="@color/oranje"
-        app:layout_constraintTop_toBottomOf="@+id/AIP_TV_Name"
-        tools:layout_editor_absoluteX="24dp" />
+        app:layout_constraintStart_toStartOf="@+id/AIP_TV_Name"
+        app:layout_constraintTop_toBottomOf="@+id/AIP_TV_Name" />
 
     <TextView
         android:id="@+id/AIP_TV_Info"
         android:layout_width="307dp"
         android:layout_height="161dp"
+        android:layout_marginTop="28dp"
         android:text="pinpoint info"
         android:textColor="@color/colorPrimaryDark"
-        tools:layout_editor_absoluteX="24dp"
-        tools:layout_editor_absoluteY="299dp" />
+        app:layout_constraintStart_toStartOf="@+id/AIP_TV_Author"
+        app:layout_constraintTop_toBottomOf="@+id/AIP_TV_Author" />
 
     <TextView
         android:id="@+id/AIP_TV_Name"
