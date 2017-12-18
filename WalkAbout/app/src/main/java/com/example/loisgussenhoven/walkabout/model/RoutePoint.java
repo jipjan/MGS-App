@@ -1,5 +1,7 @@
 package com.example.loisgussenhoven.walkabout.model;
 
+import java.io.Serializable;
+
 /**
  * Created by Jaap-Jan on 14-12-2017.
  */

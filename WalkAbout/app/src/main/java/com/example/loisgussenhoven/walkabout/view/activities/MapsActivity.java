@@ -2,6 +2,7 @@ package com.example.loisgussenhoven.walkabout.view.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -10,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -21,6 +23,7 @@ import com.example.loisgussenhoven.walkabout.controller.json.Leg;
 import com.example.loisgussenhoven.walkabout.model.BlindWallPoint;
 import com.example.loisgussenhoven.walkabout.model.Pinpoint;
 import com.example.loisgussenhoven.walkabout.model.RoutePoint;
+import com.example.loisgussenhoven.walkabout.view.OnClickListener;
 import com.example.loisgussenhoven.walkabout.view.RoutePointListAdapter;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -49,9 +52,16 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
 
         blindwalls = getIntent().getBooleanExtra("RouteType", true);
 
-        RecyclerView list = findViewById(R.id.route_points_list);
+        final RecyclerView list = findViewById(R.id.route_points_list);
         list.setLayoutManager(new LinearLayoutManager(this));
-        list.setAdapter(adapter = new RoutePointListAdapter());
+        list.setAdapter(adapter = new RoutePointListAdapter(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent t = new Intent(MapsActivity.this, InfoActivity.class);
+                t.putExtra("POI", (Pinpoint) adapter.getItems().get(list.indexOfChild(view)));
+                startActivity(t);
+            }
+        }));
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -97,7 +107,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
         });
     }
 
-    private List<LatLng> pointsToLatLng(List<Pinpoint> pinpoints) {
+    private List<LatLng> pointsToLatLng(List<? extends Pinpoint> pinpoints) {
         List<LatLng> toReturn = new ArrayList<>();
         for (Pinpoint p : pinpoints)
             toReturn.add(new LatLng(p.getLatitude(), p.getLongitude()));
