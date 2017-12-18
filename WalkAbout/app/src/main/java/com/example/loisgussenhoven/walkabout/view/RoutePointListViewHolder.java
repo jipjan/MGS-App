@@ -1,8 +1,10 @@
 package com.example.loisgussenhoven.walkabout.view;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.loisgussenhoven.walkabout.R;
 

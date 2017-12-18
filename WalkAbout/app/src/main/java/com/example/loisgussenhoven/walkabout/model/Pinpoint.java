@@ -1,12 +1,13 @@
 package com.example.loisgussenhoven.walkabout.model;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Jaap-Jan on 12-12-2017.
  */
 
-public abstract class Pinpoint {
+public abstract class Pinpoint implements Serializable {
     private int id;
     private String name, information;
     private float longitude, latitude;
