@@ -46,7 +46,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_bar_help:
-                Intent i = new Intent(this, InfoActivity.class);
+                Intent i = new Intent(this, InfoAppActivity.class);
                 startActivity(i);
                 break;
         }

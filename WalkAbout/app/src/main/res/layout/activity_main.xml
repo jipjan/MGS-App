@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/grijs"
     tools:context=".view.activities.MainActivity">
 
 
@@ -16,15 +17,12 @@
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="300dp"
+        android:layout_width="303dp"
         android:layout_height="34dp"
-        android:layout_marginBottom="32dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginBottom="36dp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/AM_BTN_Start"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/AM_BTN_Start" />
 
     <Button
@@ -32,6 +30,7 @@
         android:layout_width="311dp"
         android:layout_height="64dp"
         android:layout_marginBottom="12dp"
+        android:background="@color/oranje"
         android:text="@string/StartRoute"
         app:layout_constraintBottom_toTopOf="@+id/spinner"
         app:layout_constraintEnd_toEndOf="@+id/AM_TV_Name"
@@ -48,7 +47,7 @@
         android:text="Blind Walls"
         android:textAlignment="textStart"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textColor="?android:attr/colorForeground"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintBottom_toTopOf="@+id/AM_BTN_Start"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.268"
@@ -57,9 +56,11 @@
     <ImageButton
         android:id="@+id/AM_IB_Info"
         android:layout_width="50dp"
-        android:layout_height="38dp"
+        android:layout_height="35dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:background="@android:color/transparent"
+        android:tint="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="@+id/AM_TV_Name"
         app:layout_constraintEnd_toEndOf="@+id/AM_BTN_Start"
         app:layout_constraintHorizontal_bias="1.0"
@@ -70,31 +71,31 @@
 
     <ImageButton
         android:id="@+id/AM_IB_RouteBW"
-        android:layout_width="175dp"
+        android:layout_width="0dp"
         android:layout_height="175dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="50dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="4dp"
-        android:layout_marginTop="48dp"
         android:background="@android:color/transparent"
         android:scaleType="fitXY"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/AM_TV_Name"
         app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/blindwalls" />
 
     <ImageButton
         android:id="@+id/AM_IB_RouteHK"
-        android:layout_width="175dp"
+        android:layout_width="0dp"
         android:layout_height="175dp"
+        android:layout_marginEnd="4dp"
         android:layout_marginStart="8dp"
         android:background="@android:color/transparent"
         android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@+id/AM_IB_RouteBW"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.25"
         app:layout_constraintStart_toStartOf="@+id/guideline"
-        app:layout_constraintTop_toTopOf="@+id/AM_IB_RouteBW"
         app:srcCompat="@drawable/historischekilometer" />
 
 </android.support.constraint.ConstraintLayout>

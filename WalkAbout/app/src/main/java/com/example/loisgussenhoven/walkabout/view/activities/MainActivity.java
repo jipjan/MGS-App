@@ -12,13 +12,11 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.loisgussenhoven.walkabout.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 
 public class MainActivity extends BaseActivity {
@@ -99,7 +97,7 @@ public class MainActivity extends BaseActivity {
         BTN_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), InfoActivity.class);
+                Intent i = new Intent(getApplicationContext(), InfoAppActivity.class);
                 startActivity(i);
             }
         });
