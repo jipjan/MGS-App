@@ -38,7 +38,10 @@ public class RoutePointListAdapter<T extends Pinpoint> extends RecyclerView.Adap
     @Override
     public void onBindViewHolder(RoutePointListViewHolder holder, int position) {
         T p = items.get(position);
-        holder.pointName.setText(p.getName().trim());
+        if (p.getName().equals(""))
+            holder.pointName.setText(p.getInformation());
+        else
+            holder.pointName.setText(p.getName().trim());
     }
 
     @Override
