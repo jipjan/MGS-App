@@ -5,7 +5,7 @@ import android.os.Bundle;
 
 import com.example.loisgussenhoven.walkabout.R;
 
-public class WalkActivity extends AppCompatActivity {
+public class WalkActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

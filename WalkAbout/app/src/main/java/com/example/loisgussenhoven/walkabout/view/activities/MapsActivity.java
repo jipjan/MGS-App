@@ -44,7 +44,7 @@ import com.google.android.gms.tasks.Task;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, Response.Listener<Directions>, Response.ErrorListener {
+public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Response.Listener<Directions>, Response.ErrorListener {
 
     private GoogleMap map;
     private RoutePointListAdapter adapter;
