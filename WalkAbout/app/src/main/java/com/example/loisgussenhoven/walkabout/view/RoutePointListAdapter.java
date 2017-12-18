@@ -17,6 +17,7 @@ import java.util.List;
 
 public class RoutePointListAdapter<T extends Pinpoint> extends RecyclerView.Adapter<RoutePointListViewHolder> {
 
+    // Holy shit waarom is Java zo ongelooflijk ruk en moet je hier generics voor gebruiken en is er geen readonly collection ofzo =.="
     List<T> items = new ArrayList<>();
 
     public List<T> getItems() {
