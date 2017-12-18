@@ -18,7 +18,7 @@ import java.util.Locale;
  * Created by Jaap-Jan on 18-12-2017.
  */
 
-public class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity {
 
     @NonNull
     static boolean english;
