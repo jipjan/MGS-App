@@ -21,10 +21,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.example.loisgussenhoven.walkabout.R;
 import com.example.loisgussenhoven.walkabout.controller.DataController;
-import com.example.loisgussenhoven.walkabout.controller.GeofenceTransitionIntentService;
+import com.example.loisgussenhoven.walkabout.controller.GeofenceHandler;
 import com.example.loisgussenhoven.walkabout.controller.RouteController;
 import com.example.loisgussenhoven.walkabout.controller.json.Directions;
 import com.example.loisgussenhoven.walkabout.model.Pinpoint;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
@@ -49,8 +50,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
     private GoogleMap map;
     private HashMap<String, Pinpoint> selectedPoints;
     private boolean blindwalls;
-    private GeofencingClient geofence;
-    private PendingIntent geofencePending;
+
 
     private final int GEOFENCE_RADIUS = 50;
     private final int GEOFENCE_DURATION = 1000 * 60 * 60;
@@ -116,21 +116,13 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
             public void onSuccess(Location loc) {
                 RouteController controller = new RouteController(MapsActivity.this);
                 List<LatLng> points = pointsToLatLng(currentPoints);
-                geofence = LocationServices.getGeofencingClient(MapsActivity.this);
-                geofence.addGeofences(buildFences(points), getGeofencePending()).addOnSuccessListener(MapsActivity.this, new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("Geo", "Success");
-                    }
-                }).addOnFailureListener(MapsActivity.this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("Geo", "Fail");
-                    }
-                });
+                GeofenceHandler geofence = new GeofenceHandler(MapsActivity.this);
+                geofence.setPoints(currentPoints);
+                geofence.addFences();
                 if (loc != null) {
-                    Toast.makeText(MapsActivity.this, "Laatste positie niet beschikbaar...", Toast.LENGTH_LONG).show();
                     points.add(0, new LatLng(loc.getLatitude(), loc.getLongitude()));
+                } else {
+                    Toast.makeText(MapsActivity.this, "Laatste positie niet beschikbaar...", Toast.LENGTH_LONG).show();
                 }
                 controller.getDirections(points, MapsActivity.this, MapsActivity.this);
             }
@@ -220,31 +212,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
             poly.add(p);
         }
         return poly;
-    }
-
-    private GeofencingRequest buildFences(List<LatLng> input) {
-        List<Geofence> fenceList = new ArrayList<>();
-        for (LatLng item : input) {
-            fenceList.add(new Geofence.Builder()
-                    .setRequestId(item.toString())
-                    .setCircularRegion(item.latitude, item.longitude, GEOFENCE_RADIUS)
-                    .setExpirationDuration(GEOFENCE_DURATION)
-                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
-                    .build());
-        }
-
-        GeofencingRequest.Builder requestBuilder = new GeofencingRequest.Builder();
-        requestBuilder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
-        requestBuilder.addGeofences(fenceList);
-        return requestBuilder.build();
-    }
-
-    private PendingIntent getGeofencePending() {
-        if (geofencePending == null) {
-            Intent it = new Intent(MapsActivity.this, GeofenceTransitionIntentService.class);
-            geofencePending = PendingIntent.getService(MapsActivity.this, 0, it, PendingIntent.FLAG_UPDATE_CURRENT);
-        }
-        return geofencePending;
     }
 
     @Override
