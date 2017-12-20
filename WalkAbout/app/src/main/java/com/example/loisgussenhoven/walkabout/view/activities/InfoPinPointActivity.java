@@ -33,7 +33,7 @@ public class InfoPinPointActivity extends BaseActivity {
             final String url = images.get(0);
             if (url.startsWith("img")) {
                 int id = getResId(url);
-                image.setImageResource(id);
+                Picasso.with(this).load(id).into(image);
             }
             else
                 Picasso.with(this).load(url).into(image, new Callback() {
