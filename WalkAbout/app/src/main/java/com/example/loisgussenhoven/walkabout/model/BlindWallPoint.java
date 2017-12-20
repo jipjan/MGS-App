@@ -1,5 +1,7 @@
 package com.example.loisgussenhoven.walkabout.model;
 
+import com.example.loisgussenhoven.walkabout.controller.DataController;
+
 import java.util.List;
 
 /**
@@ -16,11 +18,18 @@ public class BlindWallPoint extends Pinpoint {
         this.year = year;
     }
 
+    @Override
     public String getAuthor() {
         return author;
     }
 
+    @Override
     public int getYear() {
         return year;
+    }
+
+    @Override
+    public List<String> getImages() {
+        return DataController.getInstance().getImagesByBlindWallId(getId());
     }
 }

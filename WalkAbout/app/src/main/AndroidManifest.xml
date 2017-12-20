@@ -14,6 +14,7 @@
         android:roundIcon="@mipmap/vavicon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".view.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,8 +39,10 @@
             android:name=".view.activities.MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".view.activities.WalkActivity" />
-        <activity android:name=".view.activities.InfoRouteActivity" />
+        <activity android:name=".view.activities.InfoRouteActivity"/>
         <activity android:name=".view.activities.InfoPinPointActivity"></activity>
+
+        <service android:name=".controller.GeofenceTransitionIntentService"/>
     </application>
 
 </manifest>

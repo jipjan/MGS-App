@@ -22,6 +22,16 @@ public abstract class Pinpoint implements Serializable {
         this.visited = visited;
     }
 
+    public String getAuthor() {
+        return "";
+    }
+
+    public int getYear() {
+        return 0;
+    }
+
+    public abstract List<String> getImages();
+
     public int getId() {
         return id;
     }
@@ -48,5 +58,10 @@ public abstract class Pinpoint implements Serializable {
 
     public void setVisited(boolean visited) {
         this.visited = visited;
+    }
+
+    @Override
+    public String toString() {
+        return getName();
     }
 }

@@ -8,6 +8,7 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.loisgussenhoven.walkabout.controller.json.Directions;
 import com.example.loisgussenhoven.walkabout.model.Pinpoint;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class RouteController {
             for (int i = 2; i < points.size() - 1; i++)
                 urlBuilder.append("|" + latLngToString(points.get(i)));
         }
-        urlBuilder.append("&mode=walking");
+        urlBuilder.append("&mode=walking&sensor=false&alternatives=false");
         urlBuilder.append("&key=" + API_KEY);
 
         GsonRequest<Directions> request = new GsonRequest<>(Request.Method.GET, urlBuilder.toString(), Directions.class, onSucces, onFail);
