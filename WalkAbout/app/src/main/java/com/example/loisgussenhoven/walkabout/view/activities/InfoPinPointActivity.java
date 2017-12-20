@@ -10,6 +10,8 @@ import com.example.loisgussenhoven.walkabout.R;
 import com.example.loisgussenhoven.walkabout.model.Pinpoint;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+
 public class InfoPinPointActivity extends AppCompatActivity {
 
     @Override
@@ -20,8 +22,11 @@ public class InfoPinPointActivity extends AppCompatActivity {
         Pinpoint pinpoint = (Pinpoint) getIntent().getSerializableExtra("Pinpoint");
 
         ImageView image = findViewById(R.id.AIP_IV);
-        String url = pinpoint.getImages().get(0);
-        Picasso.with(this).load(url).into(image);
+        List<String> images = pinpoint.getImages();
+        if (images != null && images.size() > 0) {
+            String url = images.get(0);
+            Picasso.with(this).load(url).into(image);
+        }
 
         TextView name = findViewById(R.id.AIP_TV_Name);
         TextView author = findViewById(R.id.AIP_TV_Author);

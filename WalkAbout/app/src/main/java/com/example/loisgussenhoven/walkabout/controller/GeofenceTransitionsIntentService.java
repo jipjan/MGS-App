@@ -60,9 +60,10 @@ public class GeofenceTransitionsIntentService extends IntentService {
 
         int transType = geofencingEvent.getGeofenceTransition();
 
+        List<Geofence> triggered = geofencingEvent.getTriggeringGeofences();
+
         if (transType == 1) {
             // er in
-            
         } else if (transType == 2) {
             // er uit
 
