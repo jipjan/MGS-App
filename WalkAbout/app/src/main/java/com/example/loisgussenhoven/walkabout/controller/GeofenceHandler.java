@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.loisgussenhoven.walkabout.OnGeofenceEvent;
 import com.example.loisgussenhoven.walkabout.R;
 import com.example.loisgussenhoven.walkabout.model.Pinpoint;
 import com.example.loisgussenhoven.walkabout.view.activities.MainActivity;
@@ -49,7 +50,7 @@ public class GeofenceHandler implements OnCompleteListener<Void> {
     final float RADIUS = 50f;
     final long EXPIRATION = 60 * 60 * 1000;
 
-    public GeofenceHandler(Context c) {
+    public GeofenceHandler(Context c, OnGeofenceEvent eventHandler) {
         context = c;
         // Empty list for storing geofences.
         mGeofenceList = new ArrayList<>();
@@ -57,6 +58,7 @@ public class GeofenceHandler implements OnCompleteListener<Void> {
         mGeofencePendingIntent = null;
         // Get the geofences used. Geofence data is hard coded in this sample.
         mGeofencingClient = LocationServices.getGeofencingClient(c);
+        GeofenceTransitionsIntentService.onGeofenceEvent = eventHandler;
     }
 
     public void populateList(List<? extends Pinpoint> newpoints) {
@@ -73,6 +75,7 @@ public class GeofenceHandler implements OnCompleteListener<Void> {
         if (!checkPermissions()) {
             Log.d("Shit", "Lacking permissions");
         } else {
+            mPendingGeofenceTask = PendingGeofenceTask.ADD;
             performPendingGeofenceTask();
         }
     }

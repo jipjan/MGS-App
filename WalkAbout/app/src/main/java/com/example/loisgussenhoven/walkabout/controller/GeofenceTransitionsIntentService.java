@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.loisgussenhoven.walkabout.OnGeofenceEvent;
 import com.example.loisgussenhoven.walkabout.R;
 import com.example.loisgussenhoven.walkabout.view.activities.MainActivity;
 import com.google.android.gms.location.Geofence;
@@ -23,6 +24,7 @@ import com.google.android.gms.location.GeofencingEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import static android.content.ContentValues.TAG;
 
@@ -35,6 +37,8 @@ public class GeofenceTransitionsIntentService extends IntentService {
     private static final String TAG = "GeofenceTransitionsIS";
 
     private static final String CHANNEL_ID = "channel_01";
+
+    public static OnGeofenceEvent onGeofenceEvent;
 
     /**
      * This constructor is required, and calls the super IntentService(String)
@@ -63,7 +67,9 @@ public class GeofenceTransitionsIntentService extends IntentService {
         List<Geofence> triggered = geofencingEvent.getTriggeringGeofences();
 
         if (transType == 1) {
-            // er in
+            if (triggered.size() > 0) {
+                onGeofenceEvent.onEnter(triggered.get(0).getRequestId());
+            }
         } else if (transType == 2) {
             // er uit
 

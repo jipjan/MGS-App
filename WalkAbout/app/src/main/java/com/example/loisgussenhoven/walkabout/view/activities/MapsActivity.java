@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.example.loisgussenhoven.walkabout.OnGeofenceEvent;
 import com.example.loisgussenhoven.walkabout.R;
 import com.example.loisgussenhoven.walkabout.controller.DataController;
 import com.example.loisgussenhoven.walkabout.controller.GeofenceHandler;
@@ -45,7 +46,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Response.Listener<Directions>, Response.ErrorListener, GoogleMap.OnMarkerClickListener {
+public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Response.Listener<Directions>, Response.ErrorListener, GoogleMap.OnMarkerClickListener, OnGeofenceEvent {
 
     private GoogleMap map;
     private HashMap<String, Pinpoint> selectedPoints;
@@ -116,7 +117,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
             public void onSuccess(Location loc) {
                 RouteController controller = new RouteController(MapsActivity.this);
                 List<LatLng> points = pointsToLatLng(currentPoints);
-                GeofenceHandler geofence = new GeofenceHandler(MapsActivity.this);
+                GeofenceHandler geofence = new GeofenceHandler(MapsActivity.this, MapsActivity.this);
                 geofence.populateList(currentPoints);
                 geofence.start();
                 if (loc != null) {
@@ -216,9 +217,23 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        Intent info = new Intent(MapsActivity.this, InfoPinPointActivity.class);
-        info.putExtra("Pinpoint", selectedPoints.get(marker.getTitle()));
-        startActivity(info);
+        openPinPointInfo(marker.getTitle());
         return false;
+    }
+
+    public void openPinPointInfo(String name) {
+        Intent info = new Intent(MapsActivity.this, InfoPinPointActivity.class);
+        info.putExtra("Pinpoint", selectedPoints.get(name));
+        startActivity(info);
+    }
+
+    @Override
+    public void onEnter(String name) {
+        openPinPointInfo(name);
+    }
+
+    @Override
+    public void onExit(String name) {
+
     }
 }
