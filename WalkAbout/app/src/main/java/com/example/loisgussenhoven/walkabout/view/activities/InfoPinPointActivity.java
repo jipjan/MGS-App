@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.example.loisgussenhoven.walkabout.R;
 import com.example.loisgussenhoven.walkabout.model.Pinpoint;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Field;
@@ -22,18 +23,31 @@ public class InfoPinPointActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info_pin_point);
 
+        Picasso.with(this).setLoggingEnabled(true);
+
         Pinpoint pinpoint = (Pinpoint) getIntent().getSerializableExtra("Pinpoint");
 
-        ImageView image = findViewById(R.id.AIP_IV);
-        List<String> images = pinpoint.getImages();
+        final ImageView image = findViewById(R.id.AIP_IV);
+        final List<String> images = pinpoint.getImages();
         if (images != null && images.size() > 0) {
-            String url = images.get(0);
+            final String url = images.get(0);
             if (url.startsWith("img")) {
                 int id = getResId(url);
                 image.setImageResource(id);
             }
             else
-                Picasso.with(this).load(url).into(image);
+                Picasso.with(this).load(url).into(image, new Callback() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
+                    public void onError() {
+                        if (images.size() > 1)
+                            Picasso.with(InfoPinPointActivity.this).load(images.get(1)).into(image);
+                    }
+                });
         }
 
         TextView name = findViewById(R.id.AIP_TV_Name);
