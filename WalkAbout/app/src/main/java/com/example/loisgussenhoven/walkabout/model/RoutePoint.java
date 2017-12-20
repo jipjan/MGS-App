@@ -1,5 +1,7 @@
 package com.example.loisgussenhoven.walkabout.model;
 
+import com.example.loisgussenhoven.walkabout.controller.DataController;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -9,12 +11,12 @@ import java.util.List;
 
 public class RoutePoint extends Pinpoint {
 
-    public RoutePoint(int id, String name, String information, float longitude, float latitude, boolean visited) {
-        super(id, name, information, longitude, latitude, visited);
+    public RoutePoint(int id, String nameNL, String nameEng, String informationNL, String informationEng, float longitude, float latitude, boolean visited) {
+        super(id, nameNL, nameEng, informationNL, informationEng, longitude, latitude, visited);
     }
 
     @Override
     public List<String> getImages() {
-        return null;
+        return DataController.getInstance().getImagesByPointId(getId());
     }
 }

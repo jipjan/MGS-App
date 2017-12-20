@@ -1,5 +1,7 @@
 package com.example.loisgussenhoven.walkabout.view.activities;
 
+import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
@@ -10,9 +12,10 @@ import com.example.loisgussenhoven.walkabout.R;
 import com.example.loisgussenhoven.walkabout.model.Pinpoint;
 import com.squareup.picasso.Picasso;
 
+import java.lang.reflect.Field;
 import java.util.List;
 
-public class InfoPinPointActivity extends AppCompatActivity {
+public class InfoPinPointActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,7 +28,12 @@ public class InfoPinPointActivity extends AppCompatActivity {
         List<String> images = pinpoint.getImages();
         if (images != null && images.size() > 0) {
             String url = images.get(0);
-            Picasso.with(this).load(url).into(image);
+            if (url.startsWith("img")) {
+                int id = getResId(url);
+                image.setImageResource(id);
+            }
+            else
+                Picasso.with(this).load(url).into(image);
         }
 
         TextView name = findViewById(R.id.AIP_TV_Name);
@@ -33,11 +41,26 @@ public class InfoPinPointActivity extends AppCompatActivity {
         TextView info = findViewById(R.id.AIP_TV_Info);
         TextView year = findViewById(R.id.AIP_TV_Year);
 
-        name.setText(pinpoint.getName());
+        if (english) {
+            name.setText(pinpoint.getNameEng());
+            info.setText(pinpoint.getInformationEng());
+        } else {
+            name.setText(pinpoint.getNameNL());
+            info.setText(pinpoint.getInformationNL());
+        }
+
         author.setText(pinpoint.getAuthor());
-        info.setText(pinpoint.getInformation());
         year.setText(pinpoint.getYear() == 0 ? "" : ""+pinpoint.getYear());
 
         info.setMovementMethod(new ScrollingMovementMethod());
+    }
+
+    private int getResId(String resName) {
+        try {
+            return getResources().getIdentifier(resName, "drawable", getPackageName());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return -1;
+        }
     }
 }

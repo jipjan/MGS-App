@@ -64,7 +64,7 @@ public class GeofenceHandler implements OnCompleteListener<Void> {
     public void populateList(List<? extends Pinpoint> newpoints) {
         for (Pinpoint item : newpoints)
             mGeofenceList.add(new Geofence.Builder()
-                    .setRequestId(item.getName())
+                    .setRequestId(item.toString())
                     .setCircularRegion(item.getLatitude(), item.getLongitude(), RADIUS)
                     .setExpirationDuration(EXPIRATION)
                     .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)

@@ -21,7 +21,7 @@ import java.util.Locale;
 public abstract class BaseActivity extends AppCompatActivity {
 
     @NonNull
-    static boolean english;
+    public static boolean english;
 
     boolean showOptionsMenu = true;
 

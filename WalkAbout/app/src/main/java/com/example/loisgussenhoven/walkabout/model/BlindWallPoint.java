@@ -12,8 +12,8 @@ public class BlindWallPoint extends Pinpoint {
     private String author;
     private int year;
 
-    public BlindWallPoint(int id, String name, String information, float longitude, float latitude, boolean visited, String author, int year) {
-        super(id, name, information, longitude, latitude, visited);
+    public BlindWallPoint(int id, String nameNL, String nameEng, String informationNL, String informationEng, float longitude, float latitude, boolean visited, String author, int year) {
+        super(id, nameNL, nameEng, informationNL, informationEng, longitude, latitude, visited);
         this.author = author;
         this.year = year;
     }

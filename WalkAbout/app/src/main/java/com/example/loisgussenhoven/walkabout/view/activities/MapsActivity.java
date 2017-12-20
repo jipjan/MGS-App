@@ -152,7 +152,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
         currentPoints = points;
         selectedPoints = new HashMap<>();
         for (Pinpoint p : points) {
-            selectedPoints.put(p.getName(), p);
+            selectedPoints.put(p.toString(), p);
         }
         ArrayAdapter<? extends Pinpoint> adapter = new ArrayAdapter<>(MapsActivity.this, R.layout.pinpoint_list_item, R.id.pinpoint_list_item_text, currentPoints);
         list.setAdapter(adapter);
@@ -161,7 +161,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
         markers = new HashMap<>();
         for (Pinpoint p : points) {
             LatLng point = pinpointToLatLng(p);
-            markers.put(p.getName(), map.addMarker(new MarkerOptions().position(point).title(p.getName())));
+            markers.put(p.toString(), map.addMarker(new MarkerOptions().position(point).title(p.toString())));
             latPoints.add(point);
         }
         map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(points.get(0).getLatitude(), points.get(0).getLongitude())));
