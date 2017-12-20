@@ -76,7 +76,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
             @Override
             public void onClick(View view) {
                 Intent t = new Intent(MapsActivity.this, InfoPinPointActivity.class);
-                t.putExtra("POI", (Pinpoint) adapter.getItems().get(list.indexOfChild(view)));
+                t.putExtra("Pinpoint", (Pinpoint) adapter.getItems().get(list.indexOfChild(view)));
                 startActivity(t);
             }
         }));
