@@ -8,6 +8,7 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.loisgussenhoven.walkabout.controller.json.Directions;
 import com.example.loisgussenhoven.walkabout.model.Pinpoint;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;

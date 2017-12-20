@@ -133,6 +133,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
                         Log.d("Geo", "Fail");
                     }
                 });
+                points.add(0, new LatLng(loc.getLatitude(), loc.getLongitude()));
                 controller.getDirections(points, MapsActivity.this, MapsActivity.this);
             }
         });
