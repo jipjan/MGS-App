@@ -12,6 +12,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -31,17 +32,20 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Response.Listener<Directions>, Response.ErrorListener {
+public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Response.Listener<Directions>, Response.ErrorListener, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap map;
     private RoutePointListAdapter adapter;
+    private HashMap<String, Pinpoint> selectedPoints;
 
     private boolean blindwalls;
 
@@ -83,6 +87,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
             whenHasPermissions();
         }
 
+        googleMap.setOnMarkerClickListener(this);
         googleMap.getUiSettings().setMyLocationButtonEnabled(true);
         googleMap.moveCamera(CameraUpdateFactory.zoomTo(17.5f));
     }
@@ -123,8 +128,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
     }
 
     private void setPoints(List<? extends Pinpoint> points) {
+        selectedPoints = new HashMap<>();
+        for (Pinpoint p : points)
+            selectedPoints.put(p.getName(), p);
         adapter.setItems(points);
-
         List latPoints = new ArrayList();
         for (Pinpoint p : points) {
             LatLng point = pinpointToLatLng(p);
@@ -163,5 +170,13 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
         polyLines.color(Color.RED);
         polyLines.geodesic(true);
         map.addPolyline(polyLines);
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        Intent info = new Intent(MapsActivity.this, InfoPinPointActivity.class);
+        info.putExtra("Pinpoint", selectedPoints.get(marker.getTitle()));
+        startActivity(info);
+        return false;
     }
 }

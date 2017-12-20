@@ -16,10 +16,12 @@ public class BlindWallPoint extends Pinpoint {
         this.year = year;
     }
 
+    @Override
     public String getAuthor() {
         return author;
     }
 
+    @Override
     public int getYear() {
         return year;
     }

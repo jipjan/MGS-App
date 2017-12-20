@@ -22,6 +22,14 @@ public abstract class Pinpoint implements Serializable {
         this.visited = visited;
     }
 
+    public String getAuthor() {
+        return "";
+    }
+
+    public int getYear() {
+        return 0;
+    }
+
     public int getId() {
         return id;
     }
