@@ -229,6 +229,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
 
     @Override
     public void onEnter(String name) {
+        selectedPoints.get(name).setVisited(true);
         openPinPointInfo(name);
     }
 
