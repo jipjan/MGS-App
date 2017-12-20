@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -127,7 +128,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
                         Log.d("Geo", "Fail");
                     }
                 });
-                points.add(0, new LatLng(loc.getLatitude(), loc.getLongitude()));
+                if (loc != null) {
+                    Toast.makeText(MapsActivity.this, "Laatste positie niet beschikbaar...", Toast.LENGTH_LONG).show();
+                    points.add(0, new LatLng(loc.getLatitude(), loc.getLongitude()));
+                }
                 controller.getDirections(points, MapsActivity.this, MapsActivity.this);
             }
         });
