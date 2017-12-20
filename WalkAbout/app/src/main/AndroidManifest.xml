@@ -9,9 +9,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/vavicon"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/vavicon"
+        android:roundIcon="@drawable/roundicon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 

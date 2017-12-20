@@ -25,6 +25,7 @@ public class GeofenceTransitionIntentService extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
+
         ;
     }
 }

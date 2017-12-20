@@ -181,6 +181,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
 
     @Override
     public void onResponse(Directions response) {
+        if (response.routes.size() == 0) return;
         List<LatLng> directions = decodePoly(response.routes.get(0).overviewPolyline.points);
         map.addPolyline(new PolylineOptions()
                 .addAll(directions)
