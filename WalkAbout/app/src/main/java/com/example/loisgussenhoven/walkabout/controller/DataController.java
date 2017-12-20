@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.ContactsContract;
 
 import com.example.loisgussenhoven.walkabout.model.BlindWallPoint;
 import com.example.loisgussenhoven.walkabout.model.Pinpoint;
@@ -28,8 +29,17 @@ public class DataController extends SQLiteOpenHelper {
     private List<Pinpoint> session;
     private HashMap<String, String> routes;
 
+    private static DataController instance;
 
-    public DataController(Context c) {
+    public static DataController makeInstance(Context c) {
+        return instance = new DataController(c);
+    }
+
+    public static DataController getInstance() {
+        return instance;
+    }
+
+    private DataController(Context c) {
         super(c, DBNAME, null, VERSION);
     }
 
@@ -95,8 +105,7 @@ public class DataController extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM " + BLINDWALLIMAGETABLE + " WHERE Id = " + wallId, null);
         if (cursor != null && cursor.moveToFirst()) {
             do {
-                // String qryCreateBlindWallPoint = "CREATE TABLE BlindWallPoint(Id INT PRIMARY KEY, Name TEXT, Info TEXT, Latitude FLOAT, Longitude FLOAT, Author TEXT, Year INT);";
-                String url = cursor.getString(1);
+                String url = "https://api.blindwalls.gallery/" + cursor.getString(1);
                 urls.add(url);
             } while(cursor.moveToNext());
             cursor.close();

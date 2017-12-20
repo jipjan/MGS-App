@@ -30,6 +30,8 @@ public abstract class Pinpoint implements Serializable {
         return 0;
     }
 
+    public abstract List<String> getImages();
+
     public int getId() {
         return id;
     }

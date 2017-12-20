@@ -146,11 +146,11 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
     }
 
     private void addRoutePoints() {
-        setPoints(new DataController(this).allRoutePoints());
+        setPoints(DataController.makeInstance(this).allRoutePoints());
     }
 
     private void addBlindWallsPoints() {
-        setPoints(new DataController(this).allBlindWallPoints());
+        setPoints(DataController.makeInstance(this).allBlindWallPoints());
     }
 
     private void setPoints(List<? extends Pinpoint> points) {
