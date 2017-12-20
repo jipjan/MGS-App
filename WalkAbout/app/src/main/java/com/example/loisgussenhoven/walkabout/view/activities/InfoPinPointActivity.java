@@ -2,6 +2,7 @@ package com.example.loisgussenhoven.walkabout.view.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.widget.TextView;
 
 import com.example.loisgussenhoven.walkabout.R;
@@ -25,5 +26,7 @@ public class InfoPinPointActivity extends AppCompatActivity {
         author.setText(pinpoint.getAuthor());
         info.setText(pinpoint.getInformation());
         year.setText(pinpoint.getYear() == 0 ? "" : ""+pinpoint.getYear());
+
+        info.setMovementMethod(new ScrollingMovementMethod());
     }
 }
