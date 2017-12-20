@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.activities.MainActivity">
+
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="277dp"
+        android:layout_height="34dp"
+        android:layout_marginBottom="60dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/AM_BTN_Start"
+        app:layout_constraintStart_toStartOf="@+id/AM_BTN_Start" />
+
+    <Button
+        android:id="@+id/AM_BTN_Start"
+        android:layout_width="256dp"
+        android:layout_height="64dp"
+        android:layout_marginBottom="28dp"
+        android:background="@color/oranje"
+        android:text="@string/StartRoute"
+        app:layout_constraintBottom_toTopOf="@+id/spinner"
+        app:layout_constraintEnd_toEndOf="@+id/AM_TV_Name"
+        app:layout_constraintHorizontal_bias="0.622"
+        app:layout_constraintStart_toStartOf="@+id/AM_TV_Name" />
+
+    <TextView
+        android:id="@+id/AM_TV_Name"
+        android:layout_width="251dp"
+        android:layout_height="28dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="Blind Walls"
+        android:textAlignment="textStart"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textColor="@color/colorPrimaryDark"
+        app:layout_constraintBottom_toTopOf="@+id/AM_BTN_Start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline" />
+
+    <ImageButton
+        android:id="@+id/AM_IB_Info"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="@+id/AM_TV_Name"
+        app:layout_constraintEnd_toEndOf="@+id/AM_BTN_Start"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/AM_TV_Name"
+        app:layout_constraintTop_toTopOf="@+id/AM_TV_Name"
+        app:layout_constraintVertical_bias="0.294"
+        app:srcCompat="@drawable/infobutton" />
+
+    <ImageButton
+        android:id="@+id/AM_IB_RouteBW"
+        android:layout_width="200dp"
+        android:layout_height="130dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/AM_IB_RouteHK"
+        app:srcCompat="@drawable/blindwalls" />
+
+    <ImageButton
+        android:id="@+id/AM_IB_RouteHK"
+        android:layout_width="200dp"
+        android:layout_height="130dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@android:color/transparent"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/historischekilometer" />
+
+</android.support.constraint.ConstraintLayout>
