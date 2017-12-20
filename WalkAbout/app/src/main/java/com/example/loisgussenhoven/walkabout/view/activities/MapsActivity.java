@@ -19,12 +19,14 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.example.loisgussenhoven.walkabout.OnGeofenceEvent;
 import com.example.loisgussenhoven.walkabout.R;
 import com.example.loisgussenhoven.walkabout.controller.DataController;
-import com.example.loisgussenhoven.walkabout.controller.GeofenceTransitionIntentService;
+import com.example.loisgussenhoven.walkabout.controller.GeofenceHandler;
 import com.example.loisgussenhoven.walkabout.controller.RouteController;
 import com.example.loisgussenhoven.walkabout.controller.json.Directions;
 import com.example.loisgussenhoven.walkabout.model.Pinpoint;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
@@ -33,6 +35,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -44,19 +48,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Response.Listener<Directions>, Response.ErrorListener, GoogleMap.OnMarkerClickListener {
+public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Response.Listener<Directions>, Response.ErrorListener, GoogleMap.OnMarkerClickListener, OnGeofenceEvent {
 
     private GoogleMap map;
     private HashMap<String, Pinpoint> selectedPoints;
     private boolean blindwalls;
-    private GeofencingClient geofence;
-    private PendingIntent geofencePending;
+
 
     private final int GEOFENCE_RADIUS = 50;
     private final int GEOFENCE_DURATION = 1000 * 60 * 60;
 
     private ListView list;
     private List<? extends Pinpoint> currentPoints;
+    private HashMap<String, Marker> markers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,21 +120,13 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
             public void onSuccess(Location loc) {
                 RouteController controller = new RouteController(MapsActivity.this);
                 List<LatLng> points = pointsToLatLng(currentPoints);
-                geofence = LocationServices.getGeofencingClient(MapsActivity.this);
-                geofence.addGeofences(buildFences(points), getGeofencePending()).addOnSuccessListener(MapsActivity.this, new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.d("Geo", "Success");
-                    }
-                }).addOnFailureListener(MapsActivity.this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("Geo", "Fail");
-                    }
-                });
+                GeofenceHandler geofence = new GeofenceHandler(MapsActivity.this, MapsActivity.this);
+                geofence.populateList(currentPoints);
+                geofence.start();
                 if (loc != null) {
-                    Toast.makeText(MapsActivity.this, "Laatste positie niet beschikbaar...", Toast.LENGTH_LONG).show();
                     points.add(0, new LatLng(loc.getLatitude(), loc.getLongitude()));
+                } else {
+                    Toast.makeText(MapsActivity.this, "Laatste positie niet beschikbaar...", Toast.LENGTH_LONG).show();
                 }
                 controller.getDirections(points, MapsActivity.this, MapsActivity.this);
             }
@@ -162,9 +158,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
         list.setAdapter(adapter);
 
         List<LatLng> latPoints = new ArrayList<>();
+        markers = new HashMap<>();
         for (Pinpoint p : points) {
             LatLng point = pinpointToLatLng(p);
-            map.addMarker(new MarkerOptions().position(point).title(p.getName()));
+            markers.put(p.getName(), map.addMarker(new MarkerOptions().position(point).title(p.getName())));
             latPoints.add(point);
         }
         map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(points.get(0).getLatitude(), points.get(0).getLongitude())));
@@ -186,7 +183,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
         map.addPolyline(new PolylineOptions()
                 .addAll(directions)
                 .width(12f)
-                .color(Color.GREEN)
+                .color(Color.BLUE)
                 .geodesic(true)
         );
     }
@@ -223,36 +220,32 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
         return poly;
     }
 
-    private GeofencingRequest buildFences(List<LatLng> input) {
-        List<Geofence> fenceList = new ArrayList<>();
-        for (LatLng item : input) {
-            fenceList.add(new Geofence.Builder()
-                    .setRequestId(item.toString())
-                    .setCircularRegion(item.latitude, item.longitude, GEOFENCE_RADIUS)
-                    .setExpirationDuration(GEOFENCE_DURATION)
-                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
-                    .build());
-        }
-
-        GeofencingRequest.Builder requestBuilder = new GeofencingRequest.Builder();
-        requestBuilder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_ENTER);
-        requestBuilder.addGeofences(fenceList);
-        return requestBuilder.build();
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        openPinPointInfo(marker.getTitle());
+        return false;
     }
 
-    private PendingIntent getGeofencePending() {
-        if (geofencePending == null) {
-            Intent it = new Intent(MapsActivity.this, GeofenceTransitionIntentService.class);
-            geofencePending = PendingIntent.getService(MapsActivity.this, 0, it, PendingIntent.FLAG_UPDATE_CURRENT);
-        }
-        return geofencePending;
+    public void openPinPointInfo(String name) {
+        Intent info = new Intent(MapsActivity.this, InfoPinPointActivity.class);
+        info.putExtra("Pinpoint", selectedPoints.get(name));
+        startActivity(info);
     }
 
     @Override
-    public boolean onMarkerClick(Marker marker) {
-        Intent info = new Intent(MapsActivity.this, InfoPinPointActivity.class);
-        info.putExtra("Pinpoint", selectedPoints.get(marker.getTitle()));
-        startActivity(info);
-        return false;
+    public void onEnter(final String name) {
+        selectedPoints.get(name).setVisited(true);
+        MapsActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                markers.get(name).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+            }
+        });
+        openPinPointInfo(name);
+    }
+
+    @Override
+    public void onExit(String name) {
+
     }
 }

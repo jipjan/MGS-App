@@ -14,6 +14,8 @@
         android:roundIcon="@drawable/roundicon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service
+            android:name=".controller.GeofenceTransitionsIntentService" />
 
         <activity android:name=".view.activities.MainActivity">
             <intent-filter>
@@ -34,6 +36,9 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
         <activity
             android:name=".view.activities.MapsActivity"
@@ -41,8 +46,6 @@
         <activity android:name=".view.activities.WalkActivity" />
         <activity android:name=".view.activities.InfoRouteActivity"/>
         <activity android:name=".view.activities.InfoPinPointActivity"></activity>
-
-        <service android:name=".controller.GeofenceTransitionIntentService"/>
     </application>
 
 </manifest>
