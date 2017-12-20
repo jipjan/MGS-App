@@ -59,4 +59,9 @@ public abstract class Pinpoint implements Serializable {
     public void setVisited(boolean visited) {
         this.visited = visited;
     }
+
+    @Override
+    public String toString() {
+        return getName();
+    }
 }

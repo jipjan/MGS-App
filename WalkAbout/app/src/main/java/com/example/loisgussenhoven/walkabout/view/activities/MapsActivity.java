@@ -6,16 +6,15 @@ import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.hardware.GeomagneticField;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -24,13 +23,7 @@ import com.example.loisgussenhoven.walkabout.controller.DataController;
 import com.example.loisgussenhoven.walkabout.controller.GeofenceTransitionIntentService;
 import com.example.loisgussenhoven.walkabout.controller.RouteController;
 import com.example.loisgussenhoven.walkabout.controller.json.Directions;
-import com.example.loisgussenhoven.walkabout.controller.json.Leg;
-import com.example.loisgussenhoven.walkabout.controller.json.Polyline;
-import com.example.loisgussenhoven.walkabout.model.BlindWallPoint;
 import com.example.loisgussenhoven.walkabout.model.Pinpoint;
-import com.example.loisgussenhoven.walkabout.model.RoutePoint;
-import com.example.loisgussenhoven.walkabout.view.OnClickListener;
-import com.example.loisgussenhoven.walkabout.view.RoutePointListAdapter;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
 import com.google.android.gms.location.GeofencingRequest;
@@ -39,7 +32,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -54,7 +46,6 @@ import java.util.List;
 public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Response.Listener<Directions>, Response.ErrorListener, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap map;
-    private RoutePointListAdapter adapter;
     private HashMap<String, Pinpoint> selectedPoints;
     private boolean blindwalls;
     private GeofencingClient geofence;
@@ -63,6 +54,9 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
     private final int GEOFENCE_RADIUS = 50;
     private final int GEOFENCE_DURATION = 1000 * 60 * 60;
 
+    private ListView list;
+    private List<? extends Pinpoint> currentPoints;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,16 +64,16 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
 
         blindwalls = getIntent().getBooleanExtra("RouteType", true);
 
-        final RecyclerView list = findViewById(R.id.route_points_list);
-        list.setLayoutManager(new LinearLayoutManager(this));
-        list.setAdapter(adapter = new RoutePointListAdapter(new View.OnClickListener() {
+        list = findViewById(R.id.route_points_list);
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent t = new Intent(MapsActivity.this, InfoPinPointActivity.class);
-                t.putExtra("Pinpoint", (Pinpoint) adapter.getItems().get(list.indexOfChild(view)));
-                startActivity(t);
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Pinpoint item = (Pinpoint) adapterView.getItemAtPosition(i);
+                Intent intent = new Intent(MapsActivity.this, InfoPinPointActivity.class);
+                intent.putExtra("Pinpoint", item);
+                startActivity(intent);
             }
-        }));
+        });
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -120,7 +114,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
             @Override
             public void onSuccess(Location loc) {
                 RouteController controller = new RouteController(MapsActivity.this);
-                List<LatLng> points = pointsToLatLng(adapter.getItems());
+                List<LatLng> points = pointsToLatLng(currentPoints);
                 geofence = LocationServices.getGeofencingClient(MapsActivity.this);
                 geofence.addGeofences(buildFences(points), getGeofencePending()).addOnSuccessListener(MapsActivity.this, new OnSuccessListener<Void>() {
                     @Override
@@ -155,11 +149,14 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
     }
 
     private void setPoints(List<? extends Pinpoint> points) {
+        currentPoints = points;
         selectedPoints = new HashMap<>();
-        for (Pinpoint p : points)
+        for (Pinpoint p : points) {
             selectedPoints.put(p.getName(), p);
+        }
+        ArrayAdapter<? extends Pinpoint> adapter = new ArrayAdapter<>(MapsActivity.this, R.layout.pinpoint_list_item, R.id.pinpoint_list_item_text, currentPoints);
+        list.setAdapter(adapter);
 
-        adapter.setItems(points);
         List<LatLng> latPoints = new ArrayList<>();
         for (Pinpoint p : points) {
             LatLng point = pinpointToLatLng(p);
