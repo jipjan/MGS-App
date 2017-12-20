@@ -117,8 +117,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
                 RouteController controller = new RouteController(MapsActivity.this);
                 List<LatLng> points = pointsToLatLng(currentPoints);
                 GeofenceHandler geofence = new GeofenceHandler(MapsActivity.this);
-                geofence.setPoints(currentPoints);
-                geofence.addFences();
+                geofence.populateList(currentPoints);
+                geofence.start();
                 if (loc != null) {
                     points.add(0, new LatLng(loc.getLatitude(), loc.getLongitude()));
                 } else {

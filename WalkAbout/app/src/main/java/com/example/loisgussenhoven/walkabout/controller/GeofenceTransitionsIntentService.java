@@ -53,6 +53,20 @@ public class GeofenceTransitionsIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
+        if (geofencingEvent.hasError()) {
+            Log.d("Fencing", "Spaced 'm");
+            return;
+        }
+
+        int transType = geofencingEvent.getGeofenceTransition();
+
+        if (transType == 1) {
+            // er in
+            
+        } else if (transType == 2) {
+            // er uit
+
+        }
     }
 
     /**
