@@ -21,6 +21,7 @@ import com.example.loisgussenhoven.walkabout.controller.DataController;
 import com.example.loisgussenhoven.walkabout.controller.RouteController;
 import com.example.loisgussenhoven.walkabout.controller.json.Directions;
 import com.example.loisgussenhoven.walkabout.controller.json.Leg;
+import com.example.loisgussenhoven.walkabout.controller.json.Polyline;
 import com.example.loisgussenhoven.walkabout.model.BlindWallPoint;
 import com.example.loisgussenhoven.walkabout.model.Pinpoint;
 import com.example.loisgussenhoven.walkabout.model.RoutePoint;
@@ -145,8 +146,6 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
         return new LatLng(p.getLatitude(), p.getLongitude());
     }
 
-
-
     @Override
     public void onErrorResponse(VolleyError error) {
         Log.d("Error", error.getMessage());
@@ -154,22 +153,45 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
 
     @Override
     public void onResponse(Directions response) {
-        Log.d("Success", "Getting directions success");
-        List<LatLng> directions = new ArrayList<>();
-        for (Leg l : response.routes.get(0).legs){
-            directions.add(new LatLng(l.startLocation.lat, l.startLocation.lng));
-            directions.add(new LatLng(l.endLocation.lat, l.endLocation.lng));
-        }
-        addDirectionLines(directions);
+        List<LatLng> directions = decodePoly(response.routes.get(0).overviewPolyline.points);
+        map.addPolyline(new PolylineOptions()
+                .addAll(directions)
+                .width(12f)
+                .color(Color.GREEN)
+                .geodesic(true)
+        );
     }
 
-    private void addDirectionLines(List<LatLng> points) {
-        PolylineOptions polyLines = new PolylineOptions();
-        polyLines.addAll(points);
-        polyLines.width(8f);
-        polyLines.color(Color.RED);
-        polyLines.geodesic(true);
-        map.addPolyline(polyLines);
+    private List<LatLng> decodePoly(String encoded) {
+        List<LatLng> poly = new ArrayList<>();
+        int index = 0, len = encoded.length();
+        int lat = 0, lng = 0;
+
+        while (index < len) {
+            int b, shift = 0, result = 0;
+            do {
+                b = encoded.charAt(index++) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            int dlat = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lat += dlat;
+
+            shift = 0;
+            result = 0;
+            do {
+                b = encoded.charAt(index++) - 63;
+                result |= (b & 0x1f) << shift;
+                shift += 5;
+            } while (b >= 0x20);
+            int dlng = ((result & 1) != 0 ? ~(result >> 1) : (result >> 1));
+            lng += dlng;
+
+            LatLng p = new LatLng( (((double) lat / 1E5)),
+                    (((double) lng / 1E5) ));
+            poly.add(p);
+        }
+        return poly;
     }
 
     @Override
