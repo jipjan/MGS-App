@@ -61,6 +61,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
     private PendingIntent geofencePending;
 
     private final int GEOFENCE_RADIUS = 50;
+    private final int GEOFENCE_DURATION = 1000 * 60 * 60;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -222,7 +223,12 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
     private GeofencingRequest buildFences(List<LatLng> input) {
         List<Geofence> fenceList = new ArrayList<>();
         for (LatLng item : input) {
-            fenceList.add(new Geofence.Builder().setRequestId(item.toString()).setCircularRegion(item.latitude, item.longitude, GEOFENCE_RADIUS).setExpirationDuration(60 * 60 * 1000).setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT).build());
+            fenceList.add(new Geofence.Builder()
+                    .setRequestId(item.toString())
+                    .setCircularRegion(item.latitude, item.longitude, GEOFENCE_RADIUS)
+                    .setExpirationDuration(GEOFENCE_DURATION)
+                    .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_EXIT)
+                    .build());
         }
 
         GeofencingRequest.Builder requestBuilder = new GeofencingRequest.Builder();
