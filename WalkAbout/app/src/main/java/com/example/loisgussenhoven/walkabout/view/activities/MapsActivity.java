@@ -35,6 +35,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -58,6 +60,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
 
     private ListView list;
     private List<? extends Pinpoint> currentPoints;
+    private HashMap<String, Marker> markers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,9 +158,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
         list.setAdapter(adapter);
 
         List<LatLng> latPoints = new ArrayList<>();
+        markers = new HashMap<>();
         for (Pinpoint p : points) {
             LatLng point = pinpointToLatLng(p);
-            map.addMarker(new MarkerOptions().position(point).title(p.getName()));
+            markers.put(p.getName(), map.addMarker(new MarkerOptions().position(point).title(p.getName())));
             latPoints.add(point);
         }
         map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(points.get(0).getLatitude(), points.get(0).getLongitude())));
@@ -179,7 +183,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
         map.addPolyline(new PolylineOptions()
                 .addAll(directions)
                 .width(12f)
-                .color(Color.GREEN)
+                .color(Color.BLUE)
                 .geodesic(true)
         );
     }
@@ -229,8 +233,14 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
     }
 
     @Override
-    public void onEnter(String name) {
+    public void onEnter(final String name) {
         selectedPoints.get(name).setVisited(true);
+        MapsActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                markers.get(name).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+            }
+        });
         openPinPointInfo(name);
     }
 

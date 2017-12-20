@@ -1,32 +1,14 @@
 package com.example.loisgussenhoven.walkabout.controller;
 
 import android.app.IntentService;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.os.Build;
-import android.support.annotation.Nullable;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
-import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.loisgussenhoven.walkabout.OnGeofenceEvent;
-import com.example.loisgussenhoven.walkabout.R;
-import com.example.loisgussenhoven.walkabout.view.activities.MainActivity;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by Jaap-Jan on 20-12-2017.
@@ -35,8 +17,6 @@ import static android.content.ContentValues.TAG;
 public class GeofenceTransitionsIntentService extends IntentService {
 
     private static final String TAG = "GeofenceTransitionsIS";
-
-    private static final String CHANNEL_ID = "channel_01";
 
     public static OnGeofenceEvent onGeofenceEvent;
 

@@ -47,7 +47,7 @@ public class GeofenceHandler implements OnCompleteListener<Void> {
     private PendingIntent mGeofencePendingIntent;
     private PendingGeofenceTask mPendingGeofenceTask = PendingGeofenceTask.NONE;
 
-    final float RADIUS = 50f;
+    final float RADIUS = 20f;
     final long EXPIRATION = 60 * 60 * 1000;
 
     public GeofenceHandler(Context c, OnGeofenceEvent eventHandler) {
