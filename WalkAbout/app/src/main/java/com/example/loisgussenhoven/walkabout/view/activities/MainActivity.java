@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -85,7 +86,7 @@ public class MainActivity extends BaseActivity {
         BTN_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), MapsActivity.class);
+                Intent i = new Intent(MainActivity.this, MapsActivity.class);
                 i.putExtra("RouteType", selectedBlindwalls);
                 startActivity(i);
             }
@@ -95,11 +96,11 @@ public class MainActivity extends BaseActivity {
         BTN_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), InfoRouteActivity.class);
+                Intent i = new Intent(MainActivity.this, InfoRouteActivity.class);
+                i.putExtra("RouteType", selectedBlindwalls);
                 startActivity(i);
             }
         });
-
     }
 }
 
