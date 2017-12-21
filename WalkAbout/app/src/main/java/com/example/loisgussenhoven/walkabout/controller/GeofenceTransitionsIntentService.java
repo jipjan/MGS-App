@@ -49,6 +49,7 @@ public class GeofenceTransitionsIntentService extends IntentService {
         if (transType == 1) {
             if (triggered.size() > 0) {
                 onGeofenceEvent.onEnter(triggered.get(0).getRequestId());
+
             }
         } else if (transType == 2) {
             // er uit

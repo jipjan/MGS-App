@@ -57,6 +57,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
 
     private final int GEOFENCE_RADIUS = 50;
     private final int GEOFENCE_DURATION = 1000 * 60 * 60;
+    GeofenceHandler geofence;
 
     private ListView list;
     private List<? extends Pinpoint> currentPoints;
@@ -68,6 +69,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
         setContentView(R.layout.activity_maps);
 
         blindwalls = getIntent().getBooleanExtra("RouteType", true);
+        geofence = new GeofenceHandler(MapsActivity.this, MapsActivity.this);
 
         list = findViewById(R.id.route_points_list);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -120,7 +122,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
             public void onSuccess(Location loc) {
                 RouteController controller = new RouteController(MapsActivity.this);
                 List<LatLng> points = pointsToLatLng(currentPoints);
-                GeofenceHandler geofence = new GeofenceHandler(MapsActivity.this, MapsActivity.this);
+
                 geofence.populateList(currentPoints);
                 geofence.start();
                 if (loc != null) {
@@ -235,6 +237,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
     @Override
     public void onEnter(final String name) {
         selectedPoints.get(name).setVisited(true);
+        geofence.removeGeofence(name);
         MapsActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {

@@ -27,6 +27,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -103,6 +104,14 @@ public class GeofenceHandler implements OnCompleteListener<Void> {
 
     private void removeGeofences() {
         mGeofencingClient.removeGeofences(getGeofencePendingIntent()).addOnCompleteListener(this);
+    }
+
+    public void removeGeofence(String... ids) {
+        mGeofencingClient.removeGeofences(Arrays.asList(ids));
+    }
+
+    public List<Geofence> getGeofencesList() {
+        return mGeofenceList;
     }
 
     private void performPendingGeofenceTask() {
