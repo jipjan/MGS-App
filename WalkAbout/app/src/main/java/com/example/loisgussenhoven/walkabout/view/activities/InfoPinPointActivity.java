@@ -31,9 +31,10 @@ public class InfoPinPointActivity extends BaseActivity {
         final List<String> images = pinpoint.getImages();
         if (images != null && images.size() > 0) {
             final String url = images.get(0);
-            if (url.startsWith("img") && url.length() > 3) {
+            if (url.startsWith("img")) {
                 int id = getResId(url);
-                Picasso.with(this).load(id).into(image);
+                if (id != 0)
+                    Picasso.with(this).load(id).into(image);
             }
             else
                 Picasso.with(this).load(url).into(image, new Callback() {
