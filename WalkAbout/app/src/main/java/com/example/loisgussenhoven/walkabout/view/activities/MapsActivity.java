@@ -5,6 +5,7 @@ import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Camera;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
@@ -126,7 +127,9 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
                 geofence.populateList(currentPoints);
                 geofence.start();
                 if (loc != null) {
-                    points.add(0, new LatLng(loc.getLatitude(), loc.getLongitude()));
+                    LatLng location = new LatLng(loc.getLatitude(), loc.getLongitude());
+                    points.add(0, location);
+                    map.moveCamera(CameraUpdateFactory.newLatLng(location));
                 } else {
                     Toast.makeText(MapsActivity.this, getString(R.string.last_loc_not_found), Toast.LENGTH_LONG).show();
                 }
