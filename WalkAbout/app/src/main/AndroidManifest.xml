@@ -42,7 +42,7 @@
 
         <activity
             android:name=".view.activities.MapsActivity"
-            android:label="@string/title_activity_maps" />
+            android:label="@string/app_name" />
         <activity android:name=".view.activities.WalkActivity" />
         <activity android:name=".view.activities.InfoRouteActivity"/>
         <activity android:name=".view.activities.InfoPinPointActivity"></activity>
