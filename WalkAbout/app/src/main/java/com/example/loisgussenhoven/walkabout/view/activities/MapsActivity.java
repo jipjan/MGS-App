@@ -111,7 +111,12 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         if (requestCode == 0) {
-            whenHasPermissions();
+            if (grantResults[1] == -1) {
+                Toast.makeText(MapsActivity.this, getString(R.string.no_loc_permissions), Toast.LENGTH_LONG).show();
+                onBackPressed();
+            }
+            else
+                whenHasPermissions();
         }
     }
 

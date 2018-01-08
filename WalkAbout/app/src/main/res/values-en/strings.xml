@@ -7,4 +7,5 @@
     <string name="kleurenblindheid">Color blindness</string>
     <string name="medemogelijk">Made possible by AGS.</string>
     <string name="last_loc_not_found">Last location not available...</string>
+    <string name="no_loc_permissions">No location permissions granted, the route cannot work without location access!</string>
 </resources>
