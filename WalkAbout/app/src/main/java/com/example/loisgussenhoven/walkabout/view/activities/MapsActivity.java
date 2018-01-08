@@ -128,7 +128,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
                 if (loc != null) {
                     points.add(0, new LatLng(loc.getLatitude(), loc.getLongitude()));
                 } else {
-                    Toast.makeText(MapsActivity.this, "Laatste positie niet beschikbaar...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(MapsActivity.this, getString(R.string.last_loc_not_found), Toast.LENGTH_LONG).show();
                 }
                 controller.getDirections(points, MapsActivity.this, MapsActivity.this);
             }

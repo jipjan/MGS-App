@@ -6,4 +6,5 @@
     <string name="InfoColourblind">The application can also be used for people with color blindness.</string>
     <string name="kleurenblindheid">Color blindness</string>
     <string name="medemogelijk">Made possible by AGS.</string>
+    <string name="last_loc_not_found">Last location not available...</string>
 </resources>
