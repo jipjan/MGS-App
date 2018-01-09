@@ -29,7 +29,7 @@ public class InfoPinPointActivity extends BaseActivity {
 
         final ImageView image = findViewById(R.id.AIP_IV);
         final List<String> images = pinpoint.getImages();
-        if (images != null && images.size() > 0) {
+        if (images != null) {
             final String url = images.get(0);
             if (url.startsWith("img")) {
                 int id = getResId(url);
@@ -49,6 +49,8 @@ public class InfoPinPointActivity extends BaseActivity {
                             Picasso.with(InfoPinPointActivity.this).load(images.get(1)).into(image);
                     }
                 });
+        } else {
+            Picasso.with(InfoPinPointActivity.this).load(R.drawable.infobutton).into(image);
         }
 
         TextView name = findViewById(R.id.AIP_TV_Name);

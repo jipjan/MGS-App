@@ -82,10 +82,11 @@ public class DataController extends SQLiteOpenHelper {
     }
 
     public List<String> getImagesByPointId(int pointId) {
-        List<String> urls = new ArrayList<>();
+        List<String> urls = null;
         SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM " + ROUTEPOINTIMAGETABLE + " WHERE Id = " + pointId, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + ROUTEPOINTIMAGETABLE + " WHERE Id = " + pointId + " AND URL != ''", null);
         if (cursor != null && cursor.moveToFirst()) {
+            urls = new ArrayList<>();
             do {
                 String url = "img" + cursor.getString(1);
                 urls.add(url);
