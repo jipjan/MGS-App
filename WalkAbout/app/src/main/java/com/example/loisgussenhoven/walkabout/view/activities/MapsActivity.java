@@ -2,6 +2,7 @@ package com.example.loisgussenhoven.walkabout.view.activities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -23,6 +24,7 @@ import com.example.loisgussenhoven.walkabout.controller.DataController;
 import com.example.loisgussenhoven.walkabout.controller.GeofenceHandler;
 import com.example.loisgussenhoven.walkabout.controller.RouteController;
 import com.example.loisgussenhoven.walkabout.controller.json.Directions;
+import com.example.loisgussenhoven.walkabout.model.MapsData;
 import com.example.loisgussenhoven.walkabout.model.Pinpoint;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -36,32 +38,35 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Response.Listener<Directions>, Response.ErrorListener, GoogleMap.OnMarkerClickListener, OnGeofenceEvent {
+public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Response.Listener<Directions>, Response.ErrorListener, GoogleMap.OnMarkerClickListener, OnGeofenceEvent, Serializable {
 
     private GoogleMap map;
-    private HashMap<String, Pinpoint> selectedPoints;
-    private boolean blindwalls;
-
-
-    private final int GEOFENCE_RADIUS = 50;
-    private final int GEOFENCE_DURATION = 1000 * 60 * 60;
-    GeofenceHandler geofence;
-
     private ListView list;
-    private List<? extends Pinpoint> currentPoints;
-    private HashMap<String, Marker> markers;
+
+    private MapsData data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        blindwalls = getIntent().getBooleanExtra("RouteType", true);
-        geofence = new GeofenceHandler(MapsActivity.this, MapsActivity.this);
+        data = (MapsData) getIntent().getSerializableExtra("Data");
+        if (data == null) {
+            data = new MapsData();
+            data.isBlindWalls = getIntent().getBooleanExtra("RouteType", true);
+            data.geofence = new GeofenceHandler(MapsActivity.this, MapsActivity.this);
+        } else {
+
+        }
 
         list = findViewById(R.id.route_points_list);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -83,7 +88,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
     public void onMapReady(final GoogleMap googleMap) {
         map = googleMap;
 
-        if (blindwalls)
+        if (data.isBlindWalls)
             addBlindWallsPoints();
         else
             addRoutePoints();
@@ -118,10 +123,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
             @Override
             public void onSuccess(Location loc) {
                 RouteController controller = new RouteController(MapsActivity.this);
-                List<LatLng> points = pointsToLatLng(currentPoints);
+                List<LatLng> points = pointsToLatLng(data.currentPoints);
 
-                geofence.populateList(currentPoints);
-                geofence.start();
+                data.geofence.populateList(data.currentPoints);
+                data.geofence.start();
                 if (loc != null) {
                     LatLng location = new LatLng(loc.getLatitude(), loc.getLongitude());
                     points.add(0, location);
@@ -150,19 +155,19 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
     }
 
     private void setPoints(List<? extends Pinpoint> points) {
-        currentPoints = points;
-        selectedPoints = new HashMap<>();
+        data.currentPoints = points;
+        data.selectedPoints = new HashMap<>();
         for (Pinpoint p : points) {
-            selectedPoints.put(p.toString(), p);
+            data.selectedPoints.put(p.toString(), p);
         }
-        ArrayAdapter<? extends Pinpoint> adapter = new ArrayAdapter<>(MapsActivity.this, R.layout.pinpoint_list_item, R.id.pinpoint_list_item_text, currentPoints);
+        ArrayAdapter<? extends Pinpoint> adapter = new ArrayAdapter<>(MapsActivity.this, R.layout.pinpoint_list_item, R.id.pinpoint_list_item_text, data.currentPoints);
         list.setAdapter(adapter);
 
         List<LatLng> latPoints = new ArrayList<>();
-        markers = new HashMap<>();
+        data.markers = new HashMap<>();
         for (Pinpoint p : points) {
             LatLng point = pinpointToLatLng(p);
-            markers.put(p.toString(), map.addMarker(new MarkerOptions().position(point).title(p.toString())));
+            data.markers.put(p.toString(), map.addMarker(new MarkerOptions().position(point).title(p.toString())));
             latPoints.add(point);
         }
         map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(points.get(0).getLatitude(), points.get(0).getLongitude())));
@@ -180,9 +185,9 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
     @Override
     public void onResponse(Directions response) {
         if (response.routes.size() == 0) return;
-        List<LatLng> directions = decodePoly(response.routes.get(0).overviewPolyline.points);
+        data.directions = decodePoly(response.routes.get(0).overviewPolyline.points);
         map.addPolyline(new PolylineOptions()
-                .addAll(directions)
+                .addAll(data.directions)
                 .width(12f)
                 .color(Color.BLUE)
                 .geodesic(true)
@@ -224,23 +229,24 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
     @Override
     public boolean onMarkerClick(Marker marker) {
         openPinPointInfo(marker.getTitle());
+        saveRoute();
         return false;
     }
 
     public void openPinPointInfo(String name) {
         Intent info = new Intent(MapsActivity.this, InfoPinPointActivity.class);
-        info.putExtra("Pinpoint", selectedPoints.get(name));
+        info.putExtra("Pinpoint", data.selectedPoints.get(name));
         startActivity(info);
     }
 
     @Override
     public void onEnter(final String name) {
-        selectedPoints.get(name).setVisited(true);
-        geofence.removeGeofence(name);
+        data.selectedPoints.get(name).setVisited(true);
+        data.geofence.removeGeofence(name);
         MapsActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                markers.get(name).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                data.markers.get(name).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
             }
         });
         openPinPointInfo(name);
@@ -249,5 +255,36 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
     @Override
     public void onExit(String name) {
 
+    }
+
+    private void saveRoute() {
+        FileOutputStream file;
+        ObjectOutputStream stream;
+        try {
+            file = openFileOutput("route.bin", Context.MODE_PRIVATE);
+            stream = new ObjectOutputStream(file);
+            stream.writeObject(this);
+            stream.close();
+            file.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private MapsActivity loadRoute() {
+        FileInputStream file;
+        ObjectInputStream stream;
+
+        MapsActivity activity = null;
+        try {
+            file = openFileInput("route.bin");
+            stream = new ObjectInputStream(file);
+            activity = (MapsActivity) stream.readObject();
+            stream.close();
+            file.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return activity;
     }
 }

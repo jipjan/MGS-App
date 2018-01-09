@@ -7,10 +7,11 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 import com.example.loisgussenhoven.walkabout.controller.json.Directions;
-import com.example.loisgussenhoven.walkabout.model.Pinpoint;
-import com.google.android.gms.location.LocationServices;
+import com.example.loisgussenhoven.walkabout.view.activities.MapsActivity;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,4 +68,6 @@ public class RouteController {
     private static String latLngToString(LatLng p) {
         return p.latitude + "," + p.longitude;
     }
+
+
 }
