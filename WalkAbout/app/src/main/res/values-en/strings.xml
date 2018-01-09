@@ -8,4 +8,7 @@
     <string name="medemogelijk">Made possible by AGS.</string>
     <string name="last_loc_not_found">Last location not available...</string>
     <string name="no_loc_permissions">No location permissions granted, the route cannot work without location access!</string>
+    <string name="route_in_progress">Do you want to continue with your previous route?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

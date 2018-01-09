@@ -1,9 +1,5 @@
 package com.example.loisgussenhoven.walkabout.model;
 
-import com.example.loisgussenhoven.walkabout.controller.GeofenceHandler;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
@@ -14,9 +10,7 @@ import java.util.List;
 
 public class MapsData implements Serializable {
     public boolean isBlindWalls;
-    public List<LatLng> directions;
-    public GeofenceHandler geofence;
+    public String directionPoints;
     public List<? extends Pinpoint> currentPoints;
     public HashMap<String, Pinpoint> selectedPoints;
-    public HashMap<String, Marker> markers;
 }

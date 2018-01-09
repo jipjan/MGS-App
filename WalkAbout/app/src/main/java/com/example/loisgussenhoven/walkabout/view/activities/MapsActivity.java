@@ -38,21 +38,21 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Response.Listener<Directions>, Response.ErrorListener, GoogleMap.OnMarkerClickListener, OnGeofenceEvent, Serializable {
+public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Response.Listener<Directions>, Response.ErrorListener, GoogleMap.OnMarkerClickListener, OnGeofenceEvent {
 
     private GoogleMap map;
     private ListView list;
 
     private MapsData data;
+
+    private GeofenceHandler geofence;
+    private HashMap<String, Marker> markers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,13 +60,13 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
         setContentView(R.layout.activity_maps);
 
         data = (MapsData) getIntent().getSerializableExtra("Data");
+
         if (data == null) {
             data = new MapsData();
             data.isBlindWalls = getIntent().getBooleanExtra("RouteType", true);
-            data.geofence = new GeofenceHandler(MapsActivity.this, MapsActivity.this);
-        } else {
-
         }
+
+        geofence = new GeofenceHandler(MapsActivity.this, MapsActivity.this);
 
         list = findViewById(R.id.route_points_list);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -124,9 +124,8 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
             public void onSuccess(Location loc) {
                 RouteController controller = new RouteController(MapsActivity.this);
                 List<LatLng> points = pointsToLatLng(data.currentPoints);
-
-                data.geofence.populateList(data.currentPoints);
-                data.geofence.start();
+                geofence.populateList(data.currentPoints);
+                geofence.start();
                 if (loc != null) {
                     LatLng location = new LatLng(loc.getLatitude(), loc.getLongitude());
                     points.add(0, location);
@@ -164,10 +163,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
         list.setAdapter(adapter);
 
         List<LatLng> latPoints = new ArrayList<>();
-        data.markers = new HashMap<>();
+        markers = new HashMap<>();
         for (Pinpoint p : points) {
             LatLng point = pinpointToLatLng(p);
-            data.markers.put(p.toString(), map.addMarker(new MarkerOptions().position(point).title(p.toString())));
+            markers.put(p.toString(), map.addMarker(new MarkerOptions().position(point).title(p.toString())));
             latPoints.add(point);
         }
         map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(points.get(0).getLatitude(), points.get(0).getLongitude())));
@@ -185,9 +184,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
     @Override
     public void onResponse(Directions response) {
         if (response.routes.size() == 0) return;
-        data.directions = decodePoly(response.routes.get(0).overviewPolyline.points);
+        data.directionPoints = response.routes.get(0).overviewPolyline.points;
+        List<LatLng> decoded = decodePoly(data.directionPoints);
         map.addPolyline(new PolylineOptions()
-                .addAll(data.directions)
+                .addAll(decoded)
                 .width(12f)
                 .color(Color.BLUE)
                 .geodesic(true)
@@ -242,11 +242,11 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
     @Override
     public void onEnter(final String name) {
         data.selectedPoints.get(name).setVisited(true);
-        data.geofence.removeGeofence(name);
+        geofence.removeGeofence(name);
         MapsActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                data.markers.get(name).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+                markers.get(name).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
             }
         });
         openPinPointInfo(name);
@@ -263,28 +263,11 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
         try {
             file = openFileOutput("route.bin", Context.MODE_PRIVATE);
             stream = new ObjectOutputStream(file);
-            stream.writeObject(this);
+            stream.writeObject(data);
             stream.close();
             file.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private MapsActivity loadRoute() {
-        FileInputStream file;
-        ObjectInputStream stream;
-
-        MapsActivity activity = null;
-        try {
-            file = openFileInput("route.bin");
-            stream = new ObjectInputStream(file);
-            activity = (MapsActivity) stream.readObject();
-            stream.close();
-            file.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return activity;
     }
 }

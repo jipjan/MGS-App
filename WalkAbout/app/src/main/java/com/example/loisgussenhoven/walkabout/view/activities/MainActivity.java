@@ -1,6 +1,8 @@
 package com.example.loisgussenhoven.walkabout.view.activities;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -13,7 +15,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.loisgussenhoven.walkabout.R;
+import com.example.loisgussenhoven.walkabout.model.MapsData;
 
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +38,28 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        final MapsData data = loadRoute();
+        if (data != null) {
+            DialogInterface.OnClickListener onClick = new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    switch (i) {
+                        case DialogInterface.BUTTON_POSITIVE:
+                            startRoute(data);
+                            break;
+                        case DialogInterface.BUTTON_NEGATIVE:
+                            deleteFile("route.bin");
+                            break;
+                    }
+                }
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(getString(R.string.route_in_progress))
+                    .setPositiveButton(getString(R.string.yes), onClick)
+                    .setNegativeButton(getString(R.string.no), onClick).show();
+        }
 
         List spinnerArray = new ArrayList<String>();
         spinnerArray.add("Nederlands");
@@ -84,9 +111,7 @@ public class MainActivity extends BaseActivity {
         BTN_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, MapsActivity.class);
-                i.putExtra("RouteType", selectedBlindwalls);
-                startActivity(i);
+                startRoute(null);
             }
         });
 
@@ -94,11 +119,33 @@ public class MainActivity extends BaseActivity {
         BTN_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, InfoRouteActivity.class);
-                i.putExtra("RouteType", selectedBlindwalls);
-                startActivity(i);
+                startRoute(null);
             }
         });
+    }
+
+    private void startRoute(MapsData data) {
+        Intent i = new Intent(MainActivity.this, MapsActivity.class);
+        i.putExtra("RouteType", selectedBlindwalls);
+        i.putExtra("Data", data);
+        startActivity(i);
+    }
+
+    private MapsData loadRoute() {
+        FileInputStream file;
+        ObjectInputStream stream;
+
+        MapsData activity = null;
+        try {
+            file = openFileInput("route.bin");
+            stream = new ObjectInputStream(file);
+            activity = (MapsData) stream.readObject();
+            stream.close();
+            file.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return activity;
     }
 }
 

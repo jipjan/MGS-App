@@ -12,4 +12,7 @@ Gestaag breidt de Blind Walls Gallery uit tot een imposante en betekenisvolle co
         Met deze route stellen wij het oudste gedeelte van de stad Breda aan u voor. Aan de hand van de route maakt u kennis met de belangrijkste historische bezienswaardigheden. Ook nieuwe monumenten zoals bijvoorbeeld het Chassé Theater maken deel uit van de wandeling. Over sommige gebouwen in deze stad is zoveel te vertellen dat we een pop-up geven met extra informatie. In deze kleur staat de meest relevante informatie. De echte liefhebbers kunnen ook de rest van de tekst lezen. Op deze manier proberen wij de Historische Kilometer voor iedereen zo aantrekkelijk mogelijk te maken.
     </string>
     <string name="no_loc_permissions">Geen locatie permissies verschaft, de route kan niet zonder locatie informatie functioneren!</string>
+    <string name="route_in_progress">Wilt u verder gaan met uw vorige route?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nee</string>
 </resources>
