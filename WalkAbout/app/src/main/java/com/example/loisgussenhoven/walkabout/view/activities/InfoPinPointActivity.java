@@ -1,8 +1,5 @@
 package com.example.loisgussenhoven.walkabout.view.activities;
 
-import android.content.SharedPreferences;
-import android.graphics.drawable.Drawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.ImageView;
@@ -13,7 +10,6 @@ import com.example.loisgussenhoven.walkabout.model.Pinpoint;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 public class InfoPinPointActivity extends BaseActivity {

@@ -103,7 +103,6 @@ public class DataController extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("SELECT * FROM " + BLINDWALLTABLE, null);
         if (cursor != null && cursor.moveToFirst()) {
             do {
-                String qryCreateBlindWallPoint = "CREATE TABLE BlindWallPoint(Id INT PRIMARY KEY, NameNL TEXT, NameEng TEXT, InfoNL TEXT, InfoEng TEXT, Latitude FLOAT, Longitude FLOAT, Author TEXT, Year INT);";
                 int id = cursor.getInt(0);
                 String nameNl = cursor.getString(1);
                 String nameEng = cursor.getString(2);
