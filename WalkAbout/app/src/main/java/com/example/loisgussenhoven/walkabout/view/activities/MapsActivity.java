@@ -123,7 +123,11 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
             @Override
             public void onSuccess(Location loc) {
                 RouteController controller = new RouteController(MapsActivity.this);
-                List<LatLng> points = pointsToLatLng(data.currentPoints);
+
+                List<Pinpoint> notVisited = new ArrayList<>();
+                for (Pinpoint p : data.currentPoints)
+                    if (!p.isVisited()) notVisited.add(p);
+                List<LatLng> points = pointsToLatLng(notVisited);
                 geofence.populateList(data.currentPoints);
                 geofence.start();
                 if (loc != null) {
@@ -166,7 +170,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
         markers = new HashMap<>();
         for (Pinpoint p : points) {
             LatLng point = pinpointToLatLng(p);
-            markers.put(p.toString(), map.addMarker(new MarkerOptions().position(point).title(p.toString())));
+            Marker m = map.addMarker(new MarkerOptions().position(point).title(p.toString()));
+            if (p.isVisited())
+                m.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+            markers.put(p.toString(), m);
             latPoints.add(point);
         }
         map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(points.get(0).getLatitude(), points.get(0).getLongitude())));
