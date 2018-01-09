@@ -71,7 +71,7 @@ public class DataController extends SQLiteOpenHelper {
                 String nameNl = cursor.getString(3);
                 String nameEng = cursor.getString(4);
                 String descNl = cursor.getString(5);
-                String descEng = cursor.getString(5);
+                String descEng = cursor.getString(6);
                 RoutePoint point = new RoutePoint(id, nameNl, nameEng, descNl, descEng, lon, lat, false);
                 allRoutePoints.add(point);
             } while(cursor.moveToNext());

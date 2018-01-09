@@ -74,7 +74,7 @@ public abstract class Pinpoint implements Serializable {
 
     @Override
     public String toString() {
-        return BaseActivity.english ? getNameEng() : getNameNL();
+        return (BaseActivity.english ? getNameEng() : getNameNL()).trim();
     }
 }
 
