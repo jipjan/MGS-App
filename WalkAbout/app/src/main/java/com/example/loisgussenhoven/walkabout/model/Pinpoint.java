@@ -1,5 +1,7 @@
 package com.example.loisgussenhoven.walkabout.model;
 
+import com.example.loisgussenhoven.walkabout.view.activities.BaseActivity;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -72,7 +74,7 @@ public abstract class Pinpoint implements Serializable {
 
     @Override
     public String toString() {
-        return getNameEng();
+        return BaseActivity.english ? getNameEng() : getNameNL();
     }
 }
 
