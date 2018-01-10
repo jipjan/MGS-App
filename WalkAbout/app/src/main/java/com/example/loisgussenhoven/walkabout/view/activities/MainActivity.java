@@ -119,7 +119,9 @@ public class MainActivity extends BaseActivity {
         BTN_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startRoute(null);
+                Intent i = new Intent(MainActivity.this, InfoRouteActivity.class);
+                i.putExtra("RouteType", selectedBlindwalls);
+                startActivity(i);
             }
         });
     }
