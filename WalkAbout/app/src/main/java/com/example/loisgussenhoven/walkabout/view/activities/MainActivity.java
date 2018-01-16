@@ -73,7 +73,7 @@ public class MainActivity extends BaseActivity {
         sItems.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                setLanguage(i != 0);
+                setLanguage(i == 0 ? "nl" : "en");
             }
 
             @Override

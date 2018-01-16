@@ -10,7 +10,7 @@ public class InfoAppActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        showOptionsMenu = false;
+        hideOptionsMenu(true);
         setContentView(R.layout.activity_info_app);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

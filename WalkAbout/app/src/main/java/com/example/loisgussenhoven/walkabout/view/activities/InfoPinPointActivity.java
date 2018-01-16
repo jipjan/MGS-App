@@ -1,6 +1,8 @@
 package com.example.loisgussenhoven.walkabout.view.activities;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.method.ScrollingMovementMethod;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -56,12 +58,13 @@ public class InfoPinPointActivity extends BaseActivity {
         TextView info = findViewById(R.id.AIP_TV_Info);
         TextView year = findViewById(R.id.AIP_TV_Year);
 
-        if (english) {
-            name.setText(pinpoint.getNameEng());
-            info.setText(pinpoint.getInformationEng());
-        } else {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (preferences.getString("language", "en").equals("nl")) {
             name.setText(pinpoint.getNameNL());
             info.setText(pinpoint.getInformationNL());
+        } else {
+            name.setText(pinpoint.getNameEng());
+            info.setText(pinpoint.getInformationEng());
         }
 
         author.setText(pinpoint.getAuthor());
