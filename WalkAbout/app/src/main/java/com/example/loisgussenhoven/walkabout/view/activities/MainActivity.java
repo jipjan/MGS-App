@@ -4,8 +4,10 @@ package com.example.loisgussenhoven.walkabout.view.activities;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,6 +23,7 @@ import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class MainActivity extends BaseActivity {
@@ -31,7 +34,7 @@ public class MainActivity extends BaseActivity {
     Button BTN_start;
     ImageButton BTN_info;
 
-    Boolean selectedBlindwalls = true;
+    boolean selectedBlindwalls = true;
 
 
     @Override
@@ -61,9 +64,12 @@ public class MainActivity extends BaseActivity {
                     .setNegativeButton(getString(R.string.no), onClick).show();
         }
 
-        List spinnerArray = new ArrayList<String>();
-        spinnerArray.add("Nederlands");
-        spinnerArray.add("English");
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        Locale currentLocale = new Locale(preferences.getString("language", "en"));
+
+        List<String> spinnerArray = new ArrayList<>();
+        spinnerArray.add(new Locale("nl").getDisplayLanguage(currentLocale));
+        spinnerArray.add(new Locale("en").getDisplayLanguage(currentLocale));
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(
                 this, android.R.layout.simple_spinner_item, spinnerArray);
 
@@ -93,7 +99,7 @@ public class MainActivity extends BaseActivity {
             public void onClick(View view) {
                 IB_HK.setColorFilter(Color.argb(0, 0, 0, 0));
                 IB_BW.setColorFilter(Color.argb(150, 0, 0, 0));
-                name.setText("Historische kilometer");
+                name.setText(R.string.historic_kilometer_title);
                 selectedBlindwalls = false;
             }
         });
@@ -103,7 +109,7 @@ public class MainActivity extends BaseActivity {
             public void onClick(View view) {
                 IB_HK.setColorFilter(Color.argb(150, 0, 0, 0));
                 IB_BW.setColorFilter(Color.argb(0, 0, 0, 0));
-                name.setText("Blind Walls");
+                name.setText(R.string.blind_walls_title);
                 selectedBlindwalls = true;
             }
         });
@@ -120,7 +126,10 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(MainActivity.this, InfoRouteActivity.class);
-                i.putExtra("RouteType", selectedBlindwalls);
+                i.putExtra(InfoRouteActivity.EXTRA_TITLE, selectedBlindwalls ?
+                        getString(R.string.blind_walls_title) : getString(R.string.historic_kilometer_title));
+                i.putExtra(InfoRouteActivity.EXTRA_DESCRITION, selectedBlindwalls ?
+                        getString(R.string.blind_walls_description) : getString(R.string.historic_kilometer_description));
                 startActivity(i);
             }
         });

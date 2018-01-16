@@ -10,6 +10,9 @@ import com.example.loisgussenhoven.walkabout.R;
 
 public class InfoRouteActivity extends BaseActivity {
 
+    public static final String EXTRA_DESCRITION = "extra-description";
+    public static final String EXTRA_TITLE = "extra-title";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,17 +20,12 @@ public class InfoRouteActivity extends BaseActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        boolean blind = getIntent().getBooleanExtra("RouteType", true);
-        TextView title = findViewById(R.id.AIR_TV_Name);
-        TextView desc = findViewById(R.id.AIR_TV_Info);
-
-        if (blind) {
-            title.setText("Blind Walls Route");
-            desc.setText(getResources().getText(R.string.desc_blind_walls));
-        } else {
-            title.setText("Historische Route");
-            desc.setText(getResources().getText(R.string.desc_historische_route));
-        }
+        String title = getIntent().getStringExtra(EXTRA_TITLE);
+        String description = getIntent().getStringExtra(EXTRA_DESCRITION);
+        TextView titleView = findViewById(R.id.AIR_TV_Name);
+        TextView descriptionView = findViewById(R.id.AIR_TV_Info);
+        titleView.setText(title);
+        descriptionView.setText(description);
     }
 
     @Override

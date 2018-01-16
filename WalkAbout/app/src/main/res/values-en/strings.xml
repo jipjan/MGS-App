@@ -6,11 +6,29 @@
     <string name="InfoColourblind">The application can also be used for people with color blindness.</string>
     <string name="kleurenblindheid">Color blindness</string>
     <string name="medemogelijk">Made possible by AGS.</string>
-    <string name="last_loc_not_found">Last location not available...</string>
+    <string name="last_loc_not_found">Last location not available…</string>
     <string name="no_loc_permissions">No location permissions granted, the route cannot work without location access!</string>
     <string name="route_in_progress">Do you want to continue with your previous route?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 	<string name="skip_point">Skip this point</string>
 	<string name="visited_already">Visited</string>
+
+    <string name="blind_walls_description">
+        Together with the municipality and property owners,
+        the Blind Walls Gallery invites international graphic designers, street artists, typographers
+        and illustrators to update the image of the city.\n\n
+        Since 2014, the Blind Walls Gallery changes the appearance of Breda through impressive and
+        meaningful murals inspired by local heritage and stories.
+    </string>
+
+    <string name="historic_kilometer_title">Historic Kilometer</string>
+    <string name="historic_kilometer_description">
+        With this tour, we present you with the oldest part of the city Breda.
+        The tour will guide you amongst the most historically-important sights.
+        But also more recent additions are not forgotten, as for example the Chassé Theater will be visited.
+        Some buildings have such a big history that the tour guide can\'t say every detail.
+        Therefore, the app presents you with written, detailed information that can be read
+        whenever it suits you. This way we try to make Historic Kilometer appealing for everyone.
+    </string>
 </resources>

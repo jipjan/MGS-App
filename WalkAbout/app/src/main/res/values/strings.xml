@@ -5,17 +5,34 @@
     <string name="InfoColourblind">"De applicatie is ook te gebruiken voor mensen met kleurenblindheid. "</string>
     <string name="kleurenblindheid">Kleurenblind</string>
     <string name="medemogelijk">Medemogelijk gemaakt door AGS.</string>
-    <string name="desc_blind_walls">De Blind Walls Gallery werkt aan een nieuw stadsgezicht. Vanaf 2015 verschijnen zowel op tijdelijke als permanente locaties muurschilderingen gemaakt door internationale talenten op het gebied van grafisch ontwerp, street art, typografie en illustratie.
-    <string name="last_loc_not_found">Laatste locatie niet beschikbaar...</string>
-Gestaag breidt de Blind Walls Gallery uit tot een imposante en betekenisvolle collectie. De schilderingen verbeelden de verschillende verhalen van Breda, geïnspireerd op het verleden, heden en de toekomst van de stad.</string>
-    <string name="desc_historische_route">
-        Met deze route stellen wij het oudste gedeelte van de stad Breda aan u voor. Aan de hand van de route maakt u kennis met de belangrijkste historische bezienswaardigheden. Ook nieuwe monumenten zoals bijvoorbeeld het Chassé Theater maken deel uit van de wandeling. Over sommige gebouwen in deze stad is zoveel te vertellen dat we een pop-up geven met extra informatie. In deze kleur staat de meest relevante informatie. De echte liefhebbers kunnen ook de rest van de tekst lezen. Op deze manier proberen wij de Historische Kilometer voor iedereen zo aantrekkelijk mogelijk te maken.
-    </string>
+
+
     <string name="no_loc_permissions">Geen locatie permissies verschaft, de route kan niet zonder locatie informatie functioneren!</string>
     <string name="route_in_progress">Wilt u verder gaan met uw vorige route?</string>
     <string name="yes">Ja</string>
     <string name="no">Nee</string>
 	<string name="skip_point">Sla dit punt over</string>
-    <string name="last_loc_not_found">Uw locatie is tijdelijk niet bekend...</string>
+    <string name="last_loc_not_found">Uw locatie is tijdelijk niet bekend…</string>
 	<string name="visited_already">Bezocht</string>
+
+    <string name="blind_walls_title" translatable="false">Blind Walls</string>
+    <string name="blind_walls_description">
+        De Blind Walls Gallery werkt aan een nieuw stadsgezicht. Vanaf 2015 verschijnen zowel op
+        tijdelijke als permanente locaties muurschilderingen gemaakt door internationale talenten
+        op het gebied van grafisch ontwerp, street art, typografie en illustratie.\n\n
+        Gestaag breidt de Blind Walls Gallery uit tot een imposante en betekenisvolle collectie.
+        De schilderingen verbeelden de verschillende verhalen van Breda, geïnspireerd op het verleden,
+        heden en de toekomst van de stad.
+    </string>
+
+    <string name="historic_kilometer_title">Historische Kilometer</string>
+    <string name="historic_kilometer_description">
+        Met deze route stellen wij het oudste gedeelte van de stad Breda aan u voor.
+        Aan de hand van de route maakt u kennis met de belangrijkste historische bezienswaardigheden.
+        Ook nieuwe monumenten zoals bijvoorbeeld het Chassé Theater maken deel uit van de wandeling.
+        Over sommige gebouwen in deze stad is zoveel te vertellen dat we een pop-up geven met extra
+        informatie. In deze kleur staat de meest relevante informatie.
+        De echte liefhebbers kunnen ook de rest van de tekst lezen. Op deze manier proberen wij
+        de Historische Kilometer voor iedereen zo aantrekkelijk mogelijk te maken.
+    </string>
 </resources>
