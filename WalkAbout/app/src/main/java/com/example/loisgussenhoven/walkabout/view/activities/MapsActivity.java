@@ -4,15 +4,18 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -26,6 +29,7 @@ import com.example.loisgussenhoven.walkabout.controller.RouteController;
 import com.example.loisgussenhoven.walkabout.controller.json.Directions;
 import com.example.loisgussenhoven.walkabout.model.MapsData;
 import com.example.loisgussenhoven.walkabout.model.Pinpoint;
+import com.example.loisgussenhoven.walkabout.model.PinpointAdapter;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -168,17 +172,24 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
         for (Pinpoint p : points) {
             data.selectedPoints.put(p.toString(), p);
         }
-        ArrayAdapter<? extends Pinpoint> adapter = new ArrayAdapter<>(MapsActivity.this, R.layout.pinpoint_list_item, R.id.pinpoint_list_item_text, data.currentPoints);
+
+        ListAdapter adapter = new PinpointAdapter(this, data.currentPoints);
         list.setAdapter(adapter);
+
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean isDutch = preferences.getString("language", "en").equals("nl");
 
         List<LatLng> latPoints = new ArrayList<>();
         markers = new HashMap<>();
         for (Pinpoint p : points) {
             LatLng point = pinpointToLatLng(p);
-            Marker m = map.addMarker(new MarkerOptions().position(point).title(p.toString()));
+            Marker m = map.addMarker(new MarkerOptions()
+                    .position(point)
+                    .title(isDutch ? p.getNameNL() : p.getNameEng()));
+            m.setTag(String.valueOf(p.getId()));
             if (p.isVisited())
                 m.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
-            markers.put(p.toString(), m);
+            markers.put(String.valueOf(p.getId()), m);
             latPoints.add(point);
         }
         map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(points.get(0).getLatitude(), points.get(0).getLongitude())));
@@ -240,7 +251,7 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        openPinPointInfo(marker.getTitle());
+        openPinPointInfo((String) marker.getTag());
         saveRoute();
         return false;
     }
