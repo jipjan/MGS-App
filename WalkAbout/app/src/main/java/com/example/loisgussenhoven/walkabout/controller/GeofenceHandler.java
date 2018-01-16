@@ -10,7 +10,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 
-import com.example.loisgussenhoven.walkabout.OnGeofenceEvent;
 import com.example.loisgussenhoven.walkabout.model.Pinpoint;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingClient;
@@ -44,7 +43,7 @@ public class GeofenceHandler implements OnCompleteListener<Void>, Serializable {
     final float RADIUS = 20f;
     final long EXPIRATION = 60 * 60 * 1000;
 
-    public GeofenceHandler(Context c, OnGeofenceEvent eventHandler) {
+    public GeofenceHandler(Context c) {
         context = c;
         // Empty list for storing geofences.
         mGeofenceList = new ArrayList<>();
@@ -52,7 +51,6 @@ public class GeofenceHandler implements OnCompleteListener<Void>, Serializable {
         mGeofencePendingIntent = null;
         // Get the geofences used. Geofence data is hard coded in this sample.
         mGeofencingClient = LocationServices.getGeofencingClient(c);
-        GeofenceTransitionsIntentService.onGeofenceEvent = eventHandler;
     }
 
     public void populateList(List<? extends Pinpoint> newpoints) {

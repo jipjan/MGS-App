@@ -11,4 +11,6 @@
     <string name="route_in_progress">Do you want to continue with your previous route?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+	<string name="skip_point">Skip this point</string>
+	<string name="visited_already">Visited</string>
 </resources>

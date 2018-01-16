@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.loisgussenhoven.walkabout.view.activities.InfoPinPointActivity">
-
-<android.support.constraint.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/AIP_IV"
@@ -18,6 +14,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="24dp"
+        android:contentDescription="@string/app_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -28,6 +25,7 @@
         android:layout_width="57dp"
         android:layout_height="24dp"
         android:layout_marginEnd="24dp"
+        android:text="@string/app_name"
         android:textAlignment="textEnd"
         android:textColor="@android:color/darker_gray"
         app:layout_constraintBottom_toBottomOf="@+id/AIP_TV_Name"
@@ -38,25 +36,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="Author"
+        android:text="@string/app_name"
         android:textColor="@color/oranje"
         app:layout_constraintStart_toStartOf="@+id/AIP_TV_Name"
         app:layout_constraintTop_toBottomOf="@+id/AIP_TV_Name" />
-
-    <TextView
-        android:id="@+id/AIP_TV_Info"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="32dp"
-        android:scrollbars="vertical"
-        android:text="pinpoint info"
-        android:textColor="@color/colorPrimaryDark"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/AIP_TV_Year"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/AIP_TV_Author"
-        app:layout_constraintTop_toBottomOf="@+id/AIP_TV_Author" />
 
     <TextView
         android:id="@+id/AIP_TV_Name"
@@ -64,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="12dp"
-        android:text="Pin point naam"
+        android:text="@string/app_name"
         android:textAppearance="@style/TextAppearance.Compat.Notification.Title"
         android:textColor="@color/colorPrimaryDark"
         android:textSize="24sp"
@@ -72,5 +55,45 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/AIP_IV" />
 
+    <Button
+        android:id="@+id/skipButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:background="@color/oranje"
+        android:text="@string/skip_point"
+        android:textAppearance="@style/TextAppearance.AppCompat.Widget.Button.Colored"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/skipButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/AIP_TV_Author">
+
+        <TextView
+            android:id="@+id/AIP_TV_Info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="vertical"
+            android:text="@string/app_name"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintEnd_toEndOf="@+id/AIP_TV_Year"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/AIP_TV_Author"
+            app:layout_constraintTop_toBottomOf="@+id/AIP_TV_Author" />
+    </ScrollView>
+
 </android.support.constraint.ConstraintLayout>
-</ScrollView>

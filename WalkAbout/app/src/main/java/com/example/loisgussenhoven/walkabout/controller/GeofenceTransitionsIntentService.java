@@ -4,7 +4,6 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
-import com.example.loisgussenhoven.walkabout.OnGeofenceEvent;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofencingEvent;
 
@@ -17,8 +16,6 @@ import java.util.List;
 public class GeofenceTransitionsIntentService extends IntentService {
 
     private static final String TAG = "GeofenceTransitionsIS";
-
-    public static OnGeofenceEvent onGeofenceEvent;
 
     /**
      * This constructor is required, and calls the super IntentService(String)
@@ -47,9 +44,8 @@ public class GeofenceTransitionsIntentService extends IntentService {
         List<Geofence> triggered = geofencingEvent.getTriggeringGeofences();
 
         if (transType == 1) {
-            if (triggered.size() > 0) {
-                onGeofenceEvent.onEnter(triggered.get(0).getRequestId());
-
+            for (Geofence g : triggered) {
+                PinpointObserver.notifyNearbyPinpoint(g.getRequestId());
             }
         } else if (transType == 2) {
             // er uit

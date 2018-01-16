@@ -18,10 +18,10 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.example.loisgussenhoven.walkabout.OnGeofenceEvent;
 import com.example.loisgussenhoven.walkabout.R;
 import com.example.loisgussenhoven.walkabout.controller.DataController;
 import com.example.loisgussenhoven.walkabout.controller.GeofenceHandler;
+import com.example.loisgussenhoven.walkabout.controller.PinpointObserver;
 import com.example.loisgussenhoven.walkabout.controller.RouteController;
 import com.example.loisgussenhoven.walkabout.controller.json.Directions;
 import com.example.loisgussenhoven.walkabout.model.MapsData;
@@ -44,7 +44,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Response.Listener<Directions>, Response.ErrorListener, GoogleMap.OnMarkerClickListener, OnGeofenceEvent {
+public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Response.Listener<Directions>,
+        Response.ErrorListener, GoogleMap.OnMarkerClickListener, PinpointObserver.OnNearbyPinpointListener,
+        PinpointObserver.OnSkipPinpointListener {
 
     private GoogleMap map;
     private ListView list;
@@ -66,7 +68,10 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
             data.isBlindWalls = getIntent().getBooleanExtra("RouteType", true);
         }
 
-        geofence = new GeofenceHandler(MapsActivity.this, MapsActivity.this);
+        PinpointObserver.addOnNearbyPinpointListener(this);
+        PinpointObserver.addOnSkipPinpointListener(this);
+
+        geofence = new GeofenceHandler(this);
 
         list = findViewById(R.id.route_points_list);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -247,21 +252,22 @@ public class MapsActivity extends BaseActivity implements OnMapReadyCallback, Re
     }
 
     @Override
-    public void onEnter(final String name) {
-        data.selectedPoints.get(name).setVisited(true);
-        geofence.removeGeofence(name);
-        MapsActivity.this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                markers.get(name).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
-            }
-        });
-        openPinPointInfo(name);
+    public void onNearbyPinpoint(final String pinpointId) {
+        markPinpointAsVisited(pinpointId);
+        openPinPointInfo(pinpointId);
     }
 
     @Override
-    public void onExit(String name) {
+    public void onSkipPinpoint(String pinpointId) {
+        markPinpointAsVisited(pinpointId);
+    }
 
+    private void markPinpointAsVisited(final String pinpointId) {
+        data.selectedPoints.get(pinpointId).setVisited(true);
+        geofence.removeGeofence(pinpointId);
+        runOnUiThread(() -> {
+                markers.get(pinpointId).setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW));
+        });
     }
 
     private void saveRoute() {

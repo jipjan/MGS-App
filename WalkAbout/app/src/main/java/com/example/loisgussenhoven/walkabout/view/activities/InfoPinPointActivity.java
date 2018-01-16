@@ -2,10 +2,12 @@ package com.example.loisgussenhoven.walkabout.view.activities;
 
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.loisgussenhoven.walkabout.R;
+import com.example.loisgussenhoven.walkabout.controller.PinpointObserver;
 import com.example.loisgussenhoven.walkabout.model.Pinpoint;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
@@ -66,6 +68,16 @@ public class InfoPinPointActivity extends BaseActivity {
         year.setText(pinpoint.getYear() == 0 ? "" : ""+pinpoint.getYear());
 
         info.setMovementMethod(new ScrollingMovementMethod());
+
+        Button skipButton = findViewById(R.id.skipButton);
+        if (pinpoint.isVisited()) {
+            skipButton.setText(R.string.visited_already);
+            skipButton.setEnabled(false);
+        }
+        skipButton.setOnClickListener(v -> {
+            PinpointObserver.notifyPinpointSkipped(pinpoint.toString());
+            finish();
+        });
     }
 
     private int getResId(String resName) {

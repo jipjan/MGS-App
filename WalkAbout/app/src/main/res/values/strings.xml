@@ -15,4 +15,7 @@ Gestaag breidt de Blind Walls Gallery uit tot een imposante en betekenisvolle co
     <string name="route_in_progress">Wilt u verder gaan met uw vorige route?</string>
     <string name="yes">Ja</string>
     <string name="no">Nee</string>
+	<string name="skip_point">Sla dit punt over</string>
+    <string name="last_loc_not_found">Uw locatie is tijdelijk niet bekend...</string>
+	<string name="visited_already">Bezocht</string>
 </resources>
